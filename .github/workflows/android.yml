@@ -54,4 +54,4 @@ jobs:
           body: APK de teste gerado automaticamente. Baixe o arquivo .apk abaixo pelo celular e toque nele para instalar.
           files: entrega/*.apk
           draft: false
-          prerelease: true
+          prerelease: false
