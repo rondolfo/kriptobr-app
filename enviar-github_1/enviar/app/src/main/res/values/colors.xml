@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="fundo">#FF091417</color>
+    <color name="superficie">#FF0F1E23</color>
+    <color name="borda">#FF26424C</color>
+    <color name="tinta">#FFEAF2F3</color>
+    <color name="tinta2">#FFA6BAC0</color>
+    <color name="apagado">#FF7A9299</color>
+    <color name="mint">#FF00C69F</color>
+    <color name="mint_tinta">#FF052A23</color>
+    <color name="btc">#FFF7931A</color>
+    <color name="alta">#FF2BD07E</color>
+    <color name="baixa">#FFF2707B</color>
+</resources>
