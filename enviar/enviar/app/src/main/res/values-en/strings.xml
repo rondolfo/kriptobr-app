@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">KriptoBR Market</string>
+    <string name="aba_mercado">Market</string>
+    <string name="aba_alertas">Alerts</string>
+    <string name="aba_painel">Dashboard</string>
+    <string name="aba_loja">Store</string>
+    <string name="atualizar">Refresh</string>
+    <string name="carregando">Loading…</string>
+    <string name="termometro">Thermometer</string>
+    <string name="minha_lista">My list</string>
+    <string name="editar">edit</string>
+    <string name="em_24h">in the last 24 h</string>
+    <string name="ontem_n">yesterday %1$d</string>
+    <string name="ha7_n">7 days ago %1$d</string>
+    <string name="sem_rede">No connection right now. These are the last prices I got.</string>
+    <string name="mostrando_de">Received at %1$s</string>
+    <string name="lista_vazia">Your list is empty. Pick the coins you want to follow here.</string>
+    <string name="escolher_moedas">Pick coins</string>
+    <string name="editar_ajuda">Tap to add or remove from your list. The ones you pick show up on the Market screen and can be used for alerts.</string>
+    <string name="medo_extremo">Extreme fear</string>
+    <string name="medo">Fear</string>
+    <string name="neutro">Neutral</string>
+    <string name="ganancia">Greed</string>
+    <string name="ganancia_extrema">Extreme greed</string>
+    <string name="moeda">Coin</string>
+    <string name="me_avise_quando">Alert me when the price is</string>
+    <string name="acima_de">Above</string>
+    <string name="abaixo_de">Below</string>
+    <string name="valor">Value</string>
+    <string name="criar_alerta">Create alert</string>
+    <string name="meus_alertas">My alerts</string>
+    <string name="n_ativos">%1$d active</string>
+    <string name="alerta_acima">%1$s above %2$s</string>
+    <string name="alerta_abaixo">%1$s below %2$s</string>
+    <string name="pausado">paused</string>
+    <string name="ja_disparou">already fired — tap the switch to arm it again</string>
+    <string name="aguardando_preco">waiting for the price</string>
+    <string name="faltam_pct">%1$s to go</string>
+    <string name="como_funciona">How it works</string>
+    <string name="como_funciona_texto">The app checks prices every 15 minutes, even when closed, and alerts you the moment your target is hit. No sign-up, and the alert stays on your device.</string>
+    <string name="aviso_subiu">%1$s went above %2$s</string>
+    <string name="aviso_caiu">%1$s dropped below %2$s</string>
+    <string name="aviso_corpo">%1$s is at %2$s right now. Tap to see the market.</string>
+    <string name="loja_chamada">Price is half of it. The other half is storing it right.</string>
+    <string name="loja_sub">KriptoBR has been an official reseller for the leading hardware wallet makers in Latin America since 2017.</string>
+    <string name="loja_botao">See hardware wallets</string>
+    <string name="loja_secao">At KriptoBR</string>
+    <string name="loja_hw_txt">Trezor, Ledger and SecuX — your keys out of reach of hackers and exchange collapses.</string>
+    <string name="loja_aco">KriptoSteel and accessories</string>
+    <string name="loja_aco_txt">Seed phrase backup in steel, fireproof and waterproof.</string>
+    <string name="loja_curso">Courses</string>
+    <string name="loja_curso_txt">From the first concept to your first cold wallet.</string>
+    <string name="loja_news_txt">Our own news portal, updated all day.</string>
+    <string name="loja_aviso_titulo">Nothing here is investment advice</string>
+    <string name="loja_aviso">Data is informational and comes from public sources. Crypto is volatile; do your own research.</string>
+    <string name="widget_nome">Bitcoin price</string>
+    <string name="widget_desc">Bitcoin and Ethereum on your home screen, with the 24 h change and a refresh button.</string>
+    <string name="widget_as">updated at %1$s</string>
+    <string name="widget_atualizando">refreshing…</string>
+    <string name="widget_primeira_vez">open the app once to start</string>
+    <string name="widget_atualizar">Refresh now</string>
+    <string name="canal_precos">Price alerts</string>
+    <string name="canal_precos_desc">Alerts you created yourself.</string>
+    <string name="canal_marca">KriptoBR news</string>
+    <string name="canal_marca_desc">Coupons, deals and news.</string>
+
+    <!-- News tab -->
+    <string name="aba_noticias">News</string>
+    <string name="noticias_fonte">News from KriptoHoje</string>
+    <string name="noticias_ajuda">The green dot marks what was published after your last visit.</string>
+    <string name="noticias_vazio">Could not load the news right now. Tap the refresh button above.</string>
+    <string name="noticias_rodape">All the news is at kriptohoje.com</string>
+
+    <!-- Language and network failures -->
+    <string name="idioma_auto">Automatic (device)</string>
+    <string name="nao_carregou">Could not load prices right now. Check your connection and try again.</string>
+    <string name="tentar_de_novo">Try again</string>
+    <string name="precos_de">Offline · prices from %1$s</string>
+</resources>

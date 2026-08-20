@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">KriptoBR Mercado</string>
+    <string name="marca_curta">KriptoBR</string>
+    <string name="travessao">—</string>
+
+    <string name="aba_mercado">Mercado</string>
+    <string name="aba_alertas">Alertas</string>
+    <string name="aba_painel">Painel</string>
+    <string name="aba_loja">Loja</string>
+    <string name="atualizar">Atualizar</string>
+    <string name="carregando">Carregando…</string>
+
+    <string name="termometro">Termômetro</string>
+    <string name="minha_lista">Minha lista</string>
+    <string name="editar">editar</string>
+    <string name="em_24h">nas últimas 24 h</string>
+    <string name="ontem_n">ontem %1$d</string>
+    <string name="ha7_n">há 7 dias %1$d</string>
+    <string name="sem_rede">Sem conexão agora. Estes são os últimos preços que consegui.</string>
+    <string name="mostrando_de">Recebidos às %1$s</string>
+    <string name="lista_vazia">Sua lista está vazia. Escolha as moedas que você quer acompanhar aqui.</string>
+    <string name="escolher_moedas">Escolher moedas</string>
+    <string name="editar_ajuda">Toque para incluir ou tirar da sua lista. As escolhidas aparecem na tela Mercado e ficam disponíveis para criar alertas.</string>
+
+    <string name="medo_extremo">Medo extremo</string>
+    <string name="medo">Medo</string>
+    <string name="neutro">Neutro</string>
+    <string name="ganancia">Ganância</string>
+    <string name="ganancia_extrema">Ganância extrema</string>
+
+    <string name="moeda">Moeda</string>
+    <string name="me_avise_quando">Me avise quando o preço estiver</string>
+    <string name="acima_de">Acima de</string>
+    <string name="abaixo_de">Abaixo de</string>
+    <string name="valor">Valor</string>
+    <string name="criar_alerta">Criar alerta</string>
+    <string name="meus_alertas">Meus alertas</string>
+    <string name="n_ativos">%1$d ativos</string>
+    <string name="alerta_acima">%1$s acima de %2$s</string>
+    <string name="alerta_abaixo">%1$s abaixo de %2$s</string>
+    <string name="pausado">pausado</string>
+    <string name="ja_disparou">já avisei — toque no botão para ligar de novo</string>
+    <string name="aguardando_preco">aguardando o preço</string>
+    <string name="faltam_pct">faltam %1$s</string>
+    <string name="como_funciona">Como funciona</string>
+    <string name="como_funciona_texto">O app confere os preços a cada 15 minutos, mesmo fechado, e te avisa na hora que o alvo bater. Não precisa de cadastro e o alerta fica só no seu aparelho.</string>
+    <string name="aviso_subiu">%1$s passou de %2$s</string>
+    <string name="aviso_caiu">%1$s caiu abaixo de %2$s</string>
+    <string name="aviso_corpo">%1$s está em %2$s agora. Toque para ver o mercado.</string>
+
+    <string name="loja_chamada">Preço é metade. A outra metade é guardar direito.</string>
+    <string name="loja_sub">A KriptoBR é revendedora oficial das principais fabricantes de hardware wallet da América Latina desde 2017.</string>
+    <string name="loja_botao">Ver hardware wallets</string>
+    <string name="loja_secao">Na KriptoBR</string>
+    <string name="loja_hw">Hardware wallets</string>
+    <string name="loja_hw_txt">Trezor, Ledger e SecuX — suas chaves fora do alcance de hacker e de quebra de corretora.</string>
+    <string name="loja_aco">KriptoSteel e acessórios</string>
+    <string name="loja_aco_txt">Backup da seed phrase em aço, à prova de fogo e de água.</string>
+    <string name="loja_curso">Cursos</string>
+    <string name="loja_curso_txt">Do primeiro conceito à sua primeira carteira fria, em português.</string>
+    <string name="loja_news">KriptoHoje</string>
+    <string name="loja_news_txt">O portal de notícias da casa, atualizado o dia todo.</string>
+    <string name="loja_aviso_titulo">Nada aqui é recomendação de investimento</string>
+    <string name="loja_aviso">Os dados são informativos e vêm de fontes públicas. Criptomoedas são voláteis; estude e decida por conta própria.</string>
+
+    <string name="widget_nome">Cotação do Bitcoin</string>
+    <string name="widget_desc">Preço do Bitcoin e do Ethereum na tela inicial, com a variação de 24 h e botão de atualizar.</string>
+    <string name="widget_titulo">BITCOIN</string>
+    <string name="widget_as">atualizado às %1$s</string>
+    <string name="widget_atualizando">atualizando…</string>
+    <string name="widget_primeira_vez">abra o app uma vez para começar</string>
+    <string name="widget_atualizar">Atualizar agora</string>
+
+    <string name="canal_precos">Alertas de preço</string>
+    <string name="canal_precos_desc">Avisos dos alertas que você mesmo criou.</string>
+    <string name="canal_marca">Novidades da KriptoBR</string>
+    <string name="canal_marca_desc">Cupons, promoções e novidades.</string>
+
+    <!-- Aba de notícias -->
+    <string name="aba_noticias">Notícias</string>
+    <string name="noticias_fonte">Notícias do KriptoHoje</string>
+    <string name="noticias_ajuda">O ponto verde marca o que saiu depois da sua última visita.</string>
+    <string name="noticias_vazio">Não consegui carregar as notícias agora. Toque no botão de atualizar aí em cima.</string>
+    <string name="noticias_rodape">Todas as notícias estão em kriptohoje.com</string>
+
+    <!-- Idioma e falhas de rede -->
+    <string name="idioma_auto">Automático (do aparelho)</string>
+    <string name="nao_carregou">Não consegui carregar os preços agora. Verifique a conexão e tente de novo.</string>
+    <string name="tentar_de_novo">Tentar de novo</string>
+    <string name="precos_de">Sem conexão agora · preços de %1$s</string>
+</resources>
