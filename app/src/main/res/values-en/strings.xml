@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">KriptoBR Market</string>
+    <string name="widget_nome">Bitcoin price</string>
+    <string name="widget_desc">Bitcoin and Ethereum prices on your home screen, refreshed automatically.</string>
+    <string name="widget_atualizado">at %1$s · tap to refresh</string>
+    <string name="widget_sem_conexao">no connection</string>
+    <string name="widget_toque_atualizar">tap here to try again</string>
+    <string name="canal_nome">KriptoBR alerts</string>
+    <string name="canal_desc">Coupons, market alerts and news.</string>
+    <string name="offline_titulo">No connection</string>
+    <string name="offline_texto">Couldn\'t load the dashboard. Check your internet and try again.</string>
+    <string name="offline_botao">Try again</string>
+</resources>

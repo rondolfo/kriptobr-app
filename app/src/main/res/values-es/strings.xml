@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">KriptoBR Mercado</string>
+    <string name="widget_nome">Precio de Bitcoin</string>
+    <string name="widget_desc">Precio de Bitcoin y Ethereum en tu pantalla de inicio, actualizado solo.</string>
+    <string name="widget_atualizado">a las %1$s · toca para actualizar</string>
+    <string name="widget_sem_conexao">sin conexión</string>
+    <string name="widget_toque_atualizar">toca aquí para intentar de nuevo</string>
+    <string name="canal_nome">Avisos de KriptoBR</string>
+    <string name="canal_desc">Cupones, alertas de mercado y novedades.</string>
+    <string name="offline_titulo">Sin conexión</string>
+    <string name="offline_texto">No pude cargar el panel. Revisa tu internet e inténtalo de nuevo.</string>
+    <string name="offline_botao">Intentar de nuevo</string>
+</resources>

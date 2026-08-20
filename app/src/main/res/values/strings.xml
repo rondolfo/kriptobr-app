@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">KriptoBR Mercado</string>
+    <string name="marca_curta">KriptoBR</string>
+
+    <string name="widget_nome">Cotação do Bitcoin</string>
+    <string name="widget_desc">Preço do Bitcoin e do Ethereum na tela inicial, atualizado sozinho.</string>
+    <string name="widget_titulo">BITCOIN</string>
+    <string name="widget_carregando">—</string>
+    <string name="widget_atualizado">às %1$s · toque para atualizar</string>
+    <string name="widget_sem_conexao">sem conexão</string>
+    <string name="widget_toque_atualizar">toque aqui para tentar de novo</string>
+
+    <string name="canal_nome">Avisos da KriptoBR</string>
+    <string name="canal_desc">Cupons, alertas de mercado e novidades.</string>
+
+    <string name="offline_titulo">Sem conexão</string>
+    <string name="offline_texto">Não consegui carregar o painel. Verifique sua internet e tente de novo.</string>
+    <string name="offline_botao">Tentar de novo</string>
+</resources>

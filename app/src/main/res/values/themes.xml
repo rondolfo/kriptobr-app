@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Tema.KriptoBR" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:colorBackground">@color/fundo</item>
+        <item name="android:statusBarColor">@color/fundo</item>
+        <item name="android:navigationBarColor">@color/fundo</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <!-- evita o piscar branco enquanto a WebView não pintou -->
+        <item name="android:windowBackground">@color/fundo</item>
+    </style>
+</resources>
