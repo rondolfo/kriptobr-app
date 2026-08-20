@@ -89,4 +89,55 @@
     <string name="nao_carregou">Não consegui carregar os preços agora. Verifique a conexão e tente de novo.</string>
     <string name="tentar_de_novo">Tentar de novo</string>
     <string name="precos_de">Sem conexão agora · preços de %1$s</string>
+
+    <!-- Editar lista -->
+    <string name="buscar_moeda">Buscar moeda…</string>
+    <string name="n_escolhidas">%1$d moedas escolhidas</string>
+    <string name="nada_encontrado">Nenhuma moeda com esse nome.</string>
+
+    <!-- Cadastro -->
+    <string name="cadastro_titulo">Bem-vindo ao KriptoBR Mercado</string>
+    <string name="cadastro_texto">Informe seu e-mail para entrar. É de graça e você passa a receber cupons exclusivos da loja, alertas e as novidades do mercado.</string>
+    <string name="seu_email">Seu e-mail</string>
+    <string name="seu_nome_opcional">Seu nome (opcional)</string>
+    <string name="aceite">Autorizo a KriptoBR a me enviar cupons, alertas e novidades por e-mail. Posso cancelar quando quiser.</string>
+    <string name="ler_privacidade">Ler a política de privacidade</string>
+    <string name="entrar_no_app">Entrar</string>
+    <string name="cadastro_rodape">Não pedimos senha, telefone nem documento. Seu e-mail não é vendido nem repassado.</string>
+    <string name="email_vazio">Escreva seu e-mail para continuar.</string>
+    <string name="email_invalido">Esse e-mail não parece válido. Confira antes de continuar.</string>
+    <string name="email_descartavel">E-mails temporários não recebem o cupom. Use seu e-mail de verdade.</string>
+    <string name="precisa_aceitar">Marque a autorização para continuar.</string>
+    <string name="cadastro_falhou">Não consegui enviar agora. Verifique a conexão e tente de novo.</string>
+    <string name="quis_dizer">Você quis dizer</string>
+    <string name="confirme_titulo">Falta confirmar</string>
+    <string name="confirme_texto">Mandamos um e-mail de confirmação para %1$s. Abra e confirme — o cupom exclusivo só vai para endereços confirmados. Se não achar, olhe no spam.</string>
+    <string name="abrir_email">Abrir meu e-mail</string>
+    <string name="ja_confirmei">Já confirmei, entrar no app</string>
+    <string name="confirme_rodape">Para sair da lista, responda qualquer e-mail nosso pedindo a remoção.</string>
+
+    <!-- Rastreador -->
+    <string name="rastrear_titulo">Rastrear carteira</string>
+    <string name="rastrear_ajuda">Cole o endereço de uma carteira ou o código de uma transação. O app identifica a rede e abre o explorador de blocos certo.</string>
+    <string name="endereco_ou_hash">Endereço ou código da transação</string>
+    <string name="colar">Colar</string>
+    <string name="rastrear">Rastrear</string>
+    <string name="nao_reconhecido">Não reconheci esse endereço. Confira se copiou inteiro, sem espaços sobrando.</string>
+    <string name="parece_carteira">ENDEREÇO DE CARTEIRA</string>
+    <string name="parece_transacao">CÓDIGO DE TRANSAÇÃO</string>
+    <string name="escolha_a_rede">Endereços que começam com 0x são iguais em várias redes. Escolha onde procurar:</string>
+
+    <!-- Compartilhar -->
+    <string name="mais_opcoes">Mais opções</string>
+    <string name="compartilhar">Compartilhar</string>
+    <string name="compartilhar_titulo">Compartilhar a cotação</string>
+    <string name="compartilhar_texto">Escolha o formato. A imagem sai pronta, com a marca e o horário.</string>
+    <string name="compartilhar_legenda">Cotação de agora no KriptoBR Mercado — mercado.kriptobr.com</string>
+    <string name="formato_story">Stories</string>
+    <string name="formato_story_desc">Vertical, 9:16 — Instagram e WhatsApp</string>
+    <string name="formato_post">Publicação</string>
+    <string name="formato_post_desc">Quadrado, 1:1 — feed do Instagram</string>
+    <string name="formato_deitado">Deitado</string>
+    <string name="formato_deitado_desc">16:9 — X, LinkedIn e apresentações</string>
+    <string name="fechar">Fechar</string>
 </resources>

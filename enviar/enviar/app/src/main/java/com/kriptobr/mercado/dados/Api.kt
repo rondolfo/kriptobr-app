@@ -36,9 +36,13 @@ object Api {
 
     suspend fun moedas(ids: List<String>, fiat: String): List<Moeda> = withContext(Dispatchers.IO) {
         val lista = ids.ifEmpty { PADRAO }
+        /* O gráfico de 7 dias custa ~35 KB por moeda. Com uma lista curta vale a
+           pena; com trinta moedas seria mais de um mega e a busca começaria a
+           estourar o tempo em rede fraca. Passando disso, vão só os preços. */
+        val comGrafico = lista.size <= 25
         val endereco = "$COINGECKO/coins/markets?vs_currency=$fiat" +
             "&ids=${lista.joinToString(",")}" +
-            "&order=market_cap_desc&sparkline=true&price_change_percentage=24h"
+            "&order=market_cap_desc&sparkline=$comGrafico&price_change_percentage=24h"
         // com sparkline a resposta passa de 200 KB; em rede fraca 20 s não bastam
         val arr = JSONArray(buscarTexto(endereco, 30))
         (0 until arr.length()).map { i ->
@@ -64,10 +68,10 @@ object Api {
         }.getOrNull()
     }
 
-    /** Lista para o usuário escolher favoritos. Só nome e id, é leve. */
+    /** Lista para o usuário escolher favoritos. Sem gráfico, então 250 cabem numa consulta só. */
     suspend fun catalogo(fiat: String): List<Moeda> = withContext(Dispatchers.IO) {
         val endereco = "$COINGECKO/coins/markets?vs_currency=$fiat" +
-            "&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=24h"
+            "&order=market_cap_desc&per_page=250&page=1&sparkline=false&price_change_percentage=24h"
         val arr = JSONArray(buscarTexto(endereco))
         (0 until arr.length()).map { i ->
             val o = arr.getJSONObject(i)

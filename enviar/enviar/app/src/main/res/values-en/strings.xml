@@ -77,4 +77,63 @@
     <string name="nao_carregou">Could not load prices right now. Check your connection and try again.</string>
     <string name="tentar_de_novo">Try again</string>
     <string name="precos_de">Offline · prices from %1$s</string>
+
+    <!-- Edit list -->
+    <string name="buscar_moeda">Search coin…</string>
+    <string name="n_escolhidas">%1$d coins selected</string>
+    <string name="nada_encontrado">No coin with that name.</string>
+
+    <!-- Sign-up -->
+    <string name="cadastro_titulo">Welcome to KriptoBR Market</string>
+    <string name="cadastro_texto">Enter your email to continue. It is free, and you start receiving exclusive store coupons, alerts and market news.</string>
+    <string name="seu_email">Your email</string>
+    <string name="seu_nome_opcional">Your name (optional)</string>
+    <string name="aceite">I allow KriptoBR to send me coupons, alerts and news by email. I can unsubscribe at any time.</string>
+    <string name="ler_privacidade">Read the privacy policy</string>
+    <string name="entrar_no_app">Continue</string>
+    <string name="cadastro_rodape">No password, phone number or ID required. Your email is never sold or shared.</string>
+    <string name="email_vazio">Type your email to continue.</string>
+    <string name="email_invalido">That email does not look valid. Please check it.</string>
+    <string name="email_descartavel">Temporary emails do not receive the coupon. Please use your real address.</string>
+    <string name="precisa_aceitar">Tick the authorisation to continue.</string>
+    <string name="cadastro_falhou">Could not send it right now. Check your connection and try again.</string>
+    <string name="quis_dizer">Did you mean</string>
+    <string name="confirme_titulo">One step left</string>
+    <string name="confirme_texto">We sent a confirmation email to %1$s. Open it and confirm — the exclusive coupon only goes to confirmed addresses. Check your spam folder if you cannot find it.</string>
+    <string name="abrir_email">Open my email</string>
+    <string name="ja_confirmei">Already confirmed, continue</string>
+    <string name="confirme_rodape">To leave the list, reply to any of our emails asking to be removed.</string>
+
+    <!-- Tracker -->
+    <string name="rastrear_titulo">Track a wallet</string>
+    <string name="rastrear_ajuda">Paste a wallet address or a transaction hash. The app detects the network and opens the right block explorer.</string>
+    <string name="endereco_ou_hash">Address or transaction hash</string>
+    <string name="colar">Paste</string>
+    <string name="rastrear">Track</string>
+    <string name="nao_reconhecido">I could not recognise that address. Check that you copied all of it, with no extra spaces.</string>
+    <string name="parece_carteira">WALLET ADDRESS</string>
+    <string name="parece_transacao">TRANSACTION HASH</string>
+    <string name="escolha_a_rede">Addresses starting with 0x are identical across several networks. Pick where to look:</string>
+
+    <!-- Share -->
+    <string name="mais_opcoes">More options</string>
+    <string name="compartilhar">Share</string>
+    <string name="compartilhar_titulo">Share the prices</string>
+    <string name="compartilhar_texto">Pick a format. The image comes ready, with the brand and the timestamp.</string>
+    <string name="compartilhar_legenda">Live crypto prices on KriptoBR Market — mercado.kriptobr.com</string>
+    <string name="formato_story">Stories</string>
+    <string name="formato_story_desc">Vertical, 9:16 — Instagram and WhatsApp</string>
+    <string name="formato_post">Post</string>
+    <string name="formato_post_desc">Square, 1:1 — Instagram feed</string>
+    <string name="formato_deitado">Landscape</string>
+    <string name="formato_deitado_desc">16:9 — X, LinkedIn and slides</string>
+    <string name="fechar">Close</string>
+
+    <!-- Iguais nos três idiomas: nomes de marca e sinais gráficos. Declarados aqui
+         porque o lint exige a chave presente em todo idioma para o build de release. -->
+    <string name="marca_curta">KriptoBR</string>
+    <string name="travessao">—</string>
+    <string name="loja_hw">Hardware wallets</string>
+    <string name="loja_news">KriptoHoje</string>
+    <string name="widget_titulo">BITCOIN</string>
 </resources>

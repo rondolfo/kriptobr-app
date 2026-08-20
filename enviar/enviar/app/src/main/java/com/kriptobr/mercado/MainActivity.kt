@@ -11,13 +11,17 @@ import androidx.activity.addCallback
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -145,7 +149,28 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        LaunchedEffect(favoritos) { atualizar() }
+        /* Antes isto era LaunchedEffect(favoritos): cada moeda marcada na tela de
+           edição disparava uma busca completa na internet. Marcar cinco moedas
+           eram cinco buscas empilhadas — daí a lentidão, e daí moedas marcadas
+           que "não carregavam", porque a API cortava o excesso de pedidos.
+           Agora a lista é gravada na hora (é local) e a busca acontece uma vez
+           só, quando a pessoa termina e fecha a tela. */
+        var listaMudou by remember { mutableStateOf(false) }
+        var rastreando by remember { mutableStateOf(false) }
+        var compartilhando by remember { mutableStateOf(false) }
+        var cadastrado by remember { mutableStateOf(Cadastro.jaCadastrado(ctx)) }
+        LaunchedEffect(Unit) { atualizar() }
+
+        // porta de entrada: sem e-mail, o app não abre
+        if (!cadastrado) {
+            TelaCadastro(aoEntrar = { cadastrado = true })
+            return
+        }
+
+        if (rastreando) {
+            TelaRastrear(aoFechar = { rastreando = false })
+            return
+        }
 
         if (editando) {
             LaunchedEffect(Unit) {
@@ -157,8 +182,14 @@ class MainActivity : ComponentActivity() {
                 catalogo = catalogo,
                 favoritos = favoritos,
                 carregando = catalogo.isEmpty(),
-                aoAlternar = { id -> favoritos = Guardados.alternarFavorito(ctx, id) },
-                aoFechar = { editando = false }
+                aoAlternar = { id ->
+                    favoritos = Guardados.alternarFavorito(ctx, id)
+                    listaMudou = true
+                },
+                aoFechar = {
+                    editando = false
+                    if (listaMudou) { listaMudou = false; atualizar() }
+                }
             )
             return
         }
@@ -170,7 +201,9 @@ class MainActivity : ComponentActivity() {
                     aba = aba,
                     carregando = if (aba == Aba.NOTICIAS) carregandoNoticias else carregando,
                     aoAtualizar = if (aba == Aba.NOTICIAS) buscarNoticias else atualizar,
-                    aoTrocarIdioma = { tag -> Idioma.salvar(ctx, tag); recreate() }
+                    aoTrocarIdioma = { tag -> Idioma.salvar(ctx, tag); recreate() },
+                    aoRastrear = { rastreando = true },
+                    aoCompartilhar = { compartilhando = true }
                 )
             },
             bottomBar = { BarraAbas(aba, novas) { abaIndice = it.ordinal } }
@@ -211,6 +244,7 @@ class MainActivity : ComponentActivity() {
                     Aba.PAINEL -> TelaPainel { webPainel = it }
                     Aba.LOJA -> TelaLoja()
                 }
+                if (compartilhando) DialogoCompartilhar(mercado) { compartilhando = false }
             }
         }
     }
@@ -221,25 +255,26 @@ class MainActivity : ComponentActivity() {
         aba: Aba,
         carregando: Boolean,
         aoAtualizar: () -> Unit,
-        aoTrocarIdioma: (String) -> Unit
+        aoTrocarIdioma: (String) -> Unit,
+        aoRastrear: () -> Unit,
+        aoCompartilhar: () -> Unit
     ) {
         TopAppBar(
             title = {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Box(
-                        Modifier.size(26.dp)
-                            .clip(androidx.compose.foundation.shape.CircleShape)
-                            .background(Mint),
-                        contentAlignment = Alignment.Center
-                    ) { Text("\u20BF", color = MintTinta, fontWeight = FontWeight.ExtraBold, fontSize = 13.sp) }
+                    // a marca de verdade, não uma bolinha genérica
+                    Image(
+                        painter = painterResource(R.drawable.logo_kriptobr),
+                        contentDescription = "KriptoBR",
+                        modifier = Modifier.height(21.dp)
+                    )
                     Spacer(Modifier.width(9.dp))
-                    Text("KriptoBR", color = Tinta, fontWeight = FontWeight.Bold, fontSize = 16.sp)
-                    Spacer(Modifier.width(5.dp))
                     Text(stringResource(aba.rotulo), color = Apagado, fontSize = 13.sp)
                 }
             },
             actions = {
                 BotaoIdioma(aoTrocarIdioma)
+                MenuExtras(aoRastrear, aoCompartilhar)
                 if (aba == Aba.MERCADO || aba == Aba.NOTICIAS) {
                     if (carregando) {
                         CircularProgressIndicator(
@@ -295,6 +330,33 @@ class MainActivity : ComponentActivity() {
                         onClick = { aberto = false; if (tag != escolha) aoTrocar(tag) }
                     )
                 }
+            }
+        }
+    }
+
+    /**
+     * Menu de três pontos. Rastrear e compartilhar não ganharam aba própria de
+     * propósito: seis abas na barra de baixo ficam ilegíveis num celular
+     * pequeno, e as duas são coisas que se usa de vez em quando, não o tempo todo.
+     */
+    @Composable
+    private fun MenuExtras(aoRastrear: () -> Unit, aoCompartilhar: () -> Unit) {
+        var aberto by remember { mutableStateOf(false) }
+        Box {
+            IconButton(onClick = { aberto = true }) {
+                Icon(Icons.Filled.MoreVert, stringResource(R.string.mais_opcoes), tint = Tinta2)
+            }
+            DropdownMenu(expanded = aberto, onDismissRequest = { aberto = false }) {
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.rastrear_titulo), color = Tinta, fontSize = 14.sp) },
+                    leadingIcon = { Icon(Icons.Filled.Search, null, tint = Mint) },
+                    onClick = { aberto = false; aoRastrear() }
+                )
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.compartilhar_titulo), color = Tinta, fontSize = 14.sp) },
+                    leadingIcon = { Icon(Icons.Filled.Share, null, tint = Mint) },
+                    onClick = { aberto = false; aoCompartilhar() }
+                )
             }
         }
     }

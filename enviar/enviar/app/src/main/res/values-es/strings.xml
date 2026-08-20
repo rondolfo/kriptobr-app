@@ -77,4 +77,63 @@
     <string name="nao_carregou">No pude cargar los precios ahora. Revisa la conexión e inténtalo de nuevo.</string>
     <string name="tentar_de_novo">Intentar de nuevo</string>
     <string name="precos_de">Sin conexión · precios de %1$s</string>
+
+    <!-- Editar lista -->
+    <string name="buscar_moeda">Buscar moneda…</string>
+    <string name="n_escolhidas">%1$d monedas elegidas</string>
+    <string name="nada_encontrado">Ninguna moneda con ese nombre.</string>
+
+    <!-- Registro -->
+    <string name="cadastro_titulo">Bienvenido a KriptoBR Mercado</string>
+    <string name="cadastro_texto">Indica tu correo para entrar. Es gratis y pasas a recibir cupones exclusivos de la tienda, alertas y novedades del mercado.</string>
+    <string name="seu_email">Tu correo</string>
+    <string name="seu_nome_opcional">Tu nombre (opcional)</string>
+    <string name="aceite">Autorizo a KriptoBR a enviarme cupones, alertas y novedades por correo. Puedo cancelar cuando quiera.</string>
+    <string name="ler_privacidade">Leer la política de privacidad</string>
+    <string name="entrar_no_app">Entrar</string>
+    <string name="cadastro_rodape">No pedimos contraseña, teléfono ni documento. Tu correo no se vende ni se comparte.</string>
+    <string name="email_vazio">Escribe tu correo para continuar.</string>
+    <string name="email_invalido">Ese correo no parece válido. Revísalo antes de continuar.</string>
+    <string name="email_descartavel">Los correos temporales no reciben el cupón. Usa tu correo real.</string>
+    <string name="precisa_aceitar">Marca la autorización para continuar.</string>
+    <string name="cadastro_falhou">No pude enviarlo ahora. Revisa la conexión e inténtalo de nuevo.</string>
+    <string name="quis_dizer">¿Quisiste decir</string>
+    <string name="confirme_titulo">Falta confirmar</string>
+    <string name="confirme_texto">Enviamos un correo de confirmación a %1$s. Ábrelo y confirma — el cupón exclusivo solo va a direcciones confirmadas. Si no lo encuentras, mira en spam.</string>
+    <string name="abrir_email">Abrir mi correo</string>
+    <string name="ja_confirmei">Ya confirmé, entrar</string>
+    <string name="confirme_rodape">Para salir de la lista, responde a cualquier correo nuestro pidiendo la baja.</string>
+
+    <!-- Rastreador -->
+    <string name="rastrear_titulo">Rastrear billetera</string>
+    <string name="rastrear_ajuda">Pega la dirección de una billetera o el hash de una transacción. La app identifica la red y abre el explorador correcto.</string>
+    <string name="endereco_ou_hash">Dirección o hash de la transacción</string>
+    <string name="colar">Pegar</string>
+    <string name="rastrear">Rastrear</string>
+    <string name="nao_reconhecido">No reconocí esa dirección. Revisa que la hayas copiado entera, sin espacios de más.</string>
+    <string name="parece_carteira">DIRECCIÓN DE BILLETERA</string>
+    <string name="parece_transacao">HASH DE TRANSACCIÓN</string>
+    <string name="escolha_a_rede">Las direcciones que empiezan con 0x son iguales en varias redes. Elige dónde buscar:</string>
+
+    <!-- Compartir -->
+    <string name="mais_opcoes">Más opciones</string>
+    <string name="compartilhar">Compartir</string>
+    <string name="compartilhar_titulo">Compartir la cotización</string>
+    <string name="compartilhar_texto">Elige el formato. La imagen sale lista, con la marca y la hora.</string>
+    <string name="compartilhar_legenda">Cotización en vivo en KriptoBR Mercado — mercado.kriptobr.com</string>
+    <string name="formato_story">Stories</string>
+    <string name="formato_story_desc">Vertical, 9:16 — Instagram y WhatsApp</string>
+    <string name="formato_post">Publicación</string>
+    <string name="formato_post_desc">Cuadrado, 1:1 — feed de Instagram</string>
+    <string name="formato_deitado">Horizontal</string>
+    <string name="formato_deitado_desc">16:9 — X, LinkedIn y presentaciones</string>
+    <string name="fechar">Cerrar</string>
+
+    <!-- Iguais nos três idiomas: nomes de marca e sinais gráficos. Declarados aqui
+         porque o lint exige a chave presente em todo idioma para o build de release. -->
+    <string name="marca_curta">KriptoBR</string>
+    <string name="travessao">—</string>
+    <string name="loja_hw">Hardware wallets</string>
+    <string name="loja_news">KriptoHoje</string>
+    <string name="widget_titulo">BITCOIN</string>
 </resources>

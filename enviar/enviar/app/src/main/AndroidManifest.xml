@@ -61,5 +61,17 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="kriptobr_avisos" />
+
+        <!-- Entrega a imagem gerada para o Instagram, o WhatsApp e afins sem
+             expor nenhum outro arquivo do app. -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.arquivos"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/caminhos_arquivos" />
+        </provider>
     </application>
 </manifest>

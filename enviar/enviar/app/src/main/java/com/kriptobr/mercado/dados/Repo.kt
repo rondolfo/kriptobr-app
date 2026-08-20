@@ -25,7 +25,7 @@ object Repo {
         for (n in 0 until TENTATIVAS) {
             if (n > 0) delay(if (n == 1) 2000L else 5000L)   // 2 s e depois 5 s
             val r = runCatching {
-                val moedas = Api.moedas(ids, fiat)
+                val moedas = Api.moedas(ids, fiat)   // sem gráfico quando a lista é longa
                 if (moedas.isEmpty()) error("lista vazia")
                 val medo = Api.medoGanancia()
                 val m = Mercado(moedas, medo ?: Guardados.mercadoGuardado(ctx).medo, System.currentTimeMillis())

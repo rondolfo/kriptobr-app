@@ -6,7 +6,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -47,6 +53,15 @@ fun TelaEditarLista(
             }
             return@Scaffold
         }
+        /* Com 250 moedas, rolar até achar a sua é trabalho. A busca resolve, e
+           filtrar em memória é instantâneo — nada aqui vai à internet. */
+        var busca by remember { mutableStateOf("") }
+        val visiveis = remember(busca, catalogo) {
+            val q = busca.trim().lowercase()
+            if (q.isEmpty()) catalogo
+            else catalogo.filter { it.nome.lowercase().contains(q) || it.simbolo.lowercase().contains(q) }
+        }
+
         LazyColumn(
             Modifier.fillMaxSize().padding(pad),
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
@@ -54,8 +69,32 @@ fun TelaEditarLista(
             item {
                 Text(stringResource(R.string.editar_ajuda), color = Apagado,
                     fontSize = 12.sp, lineHeight = 17.sp, modifier = Modifier.padding(bottom = 10.dp))
+                OutlinedTextField(
+                    value = busca,
+                    onValueChange = { busca = it },
+                    singleLine = true,
+                    placeholder = { Text(stringResource(R.string.buscar_moeda), color = Apagado, fontSize = 13.sp) },
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = Mint, unfocusedBorderColor = Borda,
+                        focusedTextColor = Tinta, unfocusedTextColor = Tinta,
+                        cursorColor = Mint,
+                        focusedContainerColor = Superficie, unfocusedContainerColor = Superficie
+                    ),
+                    shape = RoundedCornerShape(12.dp),
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 6.dp)
+                )
+                Text(
+                    stringResource(R.string.n_escolhidas, favoritos.size),
+                    color = Mint, fontSize = 11.5f.sp, fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(bottom = 8.dp, top = 2.dp)
+                )
             }
-            items(catalogo, key = { it.id }) { m ->
+            if (visiveis.isEmpty()) item {
+                Text(stringResource(R.string.nada_encontrado), color = Apagado, fontSize = 13.sp,
+                    modifier = Modifier.padding(vertical = 24.dp))
+            }
+            items(visiveis, key = { it.id }) { m ->
                 val marcada = m.id in favoritos
                 Row(
                     Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp))
