@@ -158,12 +158,21 @@ class MainActivity : ComponentActivity() {
         var listaMudou by remember { mutableStateOf(false) }
         var rastreando by remember { mutableStateOf(false) }
         var compartilhando by remember { mutableStateOf(false) }
-        var cadastrado by remember { mutableStateOf(Cadastro.jaCadastrado(ctx)) }
-        LaunchedEffect(Unit) { atualizar() }
+        /* O convite para cadastrar aparece depois de um dia de uso, não na
+           abertura. Quem acabou de instalar quer ver o preço do Bitcoin; um
+           formulário na cara é o caminho mais curto para a desinstalação e para
+           a avaliação de uma estrela. */
+        var mostrarCadastro by remember { mutableStateOf(Cadastro.deveMostrar(ctx)) }
+        LaunchedEffect(Unit) {
+            Cadastro.marcarUso(ctx)
+            atualizar()
+        }
 
-        // porta de entrada: sem e-mail, o app não abre
-        if (!cadastrado) {
-            TelaCadastro(aoEntrar = { cadastrado = true })
+        if (mostrarCadastro) {
+            TelaCadastro(
+                aoEntrar = { mostrarCadastro = false },
+                aoAdiar = { Cadastro.adiar(ctx); mostrarCadastro = false }
+            )
             return
         }
 
@@ -203,7 +212,8 @@ class MainActivity : ComponentActivity() {
                     aoAtualizar = if (aba == Aba.NOTICIAS) buscarNoticias else atualizar,
                     aoTrocarIdioma = { tag -> Idioma.salvar(ctx, tag); recreate() },
                     aoRastrear = { rastreando = true },
-                    aoCompartilhar = { compartilhando = true }
+                    aoCompartilhar = { compartilhando = true },
+                    aoCadastrar = if (Cadastro.jaCadastrado(ctx)) null else ({ mostrarCadastro = true })
                 )
             },
             bottomBar = { BarraAbas(aba, novas) { abaIndice = it.ordinal } }
@@ -216,6 +226,7 @@ class MainActivity : ComponentActivity() {
                         erro = erro,
                         aoEditarLista = { editando = true },
                         aoTentarDeNovo = atualizar,
+                        aoRastrear = { rastreando = true },
                         aoTocarMoeda = { }
                     )
                     Aba.NOTICIAS -> TelaNoticias(
@@ -257,7 +268,8 @@ class MainActivity : ComponentActivity() {
         aoAtualizar: () -> Unit,
         aoTrocarIdioma: (String) -> Unit,
         aoRastrear: () -> Unit,
-        aoCompartilhar: () -> Unit
+        aoCompartilhar: () -> Unit,
+        aoCadastrar: (() -> Unit)?
     ) {
         TopAppBar(
             title = {
@@ -274,7 +286,7 @@ class MainActivity : ComponentActivity() {
             },
             actions = {
                 BotaoIdioma(aoTrocarIdioma)
-                MenuExtras(aoRastrear, aoCompartilhar)
+                MenuExtras(aoRastrear, aoCompartilhar, aoCadastrar)
                 if (aba == Aba.MERCADO || aba == Aba.NOTICIAS) {
                     if (carregando) {
                         CircularProgressIndicator(
@@ -340,7 +352,11 @@ class MainActivity : ComponentActivity() {
      * pequeno, e as duas são coisas que se usa de vez em quando, não o tempo todo.
      */
     @Composable
-    private fun MenuExtras(aoRastrear: () -> Unit, aoCompartilhar: () -> Unit) {
+    private fun MenuExtras(
+        aoRastrear: () -> Unit,
+        aoCompartilhar: () -> Unit,
+        aoCadastrar: (() -> Unit)?
+    ) {
         var aberto by remember { mutableStateOf(false) }
         Box {
             IconButton(onClick = { aberto = true }) {
@@ -356,6 +372,11 @@ class MainActivity : ComponentActivity() {
                     text = { Text(stringResource(R.string.compartilhar_titulo), color = Tinta, fontSize = 14.sp) },
                     leadingIcon = { Icon(Icons.Filled.Share, null, tint = Mint) },
                     onClick = { aberto = false; aoCompartilhar() }
+                )
+                if (aoCadastrar != null) DropdownMenuItem(
+                    text = { Text(stringResource(R.string.receber_cupom), color = Tinta, fontSize = 14.sp) },
+                    leadingIcon = { Icon(Icons.Filled.Star, null, tint = Mint) },
+                    onClick = { aberto = false; aoCadastrar() }
                 )
             }
         }

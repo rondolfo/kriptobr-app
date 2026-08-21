@@ -14,14 +14,14 @@ if (temFirebase) {
 
 android {
     namespace = "com.kriptobr.mercado"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.kriptobr.mercado"
         minSdk = 24
-        targetSdk = 35
-        versionCode = 2
-        versionName = "2.0.0"
+        targetSdk = 36
+        versionCode = 3
+        versionName = "2.1.0"
     }
 
     buildTypes {

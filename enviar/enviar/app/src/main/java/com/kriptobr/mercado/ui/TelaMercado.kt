@@ -29,6 +29,7 @@ fun TelaMercado(
     erro: String?,
     aoEditarLista: () -> Unit,
     aoTentarDeNovo: () -> Unit,
+    aoRastrear: () -> Unit,
     aoTocarMoeda: (Moeda) -> Unit
 ) {
     val btc = mercado.acharPor("bitcoin")
@@ -62,6 +63,9 @@ fun TelaMercado(
             item { TituloSecao(stringResource(R.string.termometro)) }
             item { CartaoMedo(fg) }
         }
+        /* O rastreador estava escondido no menu de três pontos e ninguém achava.
+           Aqui ele fica no caminho de quem rola a tela — que é todo mundo. */
+        if (temDados) item { AtalhoRastrear(aoRastrear) }
         if (temDados || !carregando) item {
             TituloSecao(stringResource(R.string.minha_lista), stringResource(R.string.editar), aoEditarLista)
         }
@@ -73,6 +77,33 @@ fun TelaMercado(
 }
 
 /** Tem preço na tela, só não é o mais fresco: uma linha discreta, sem moldura de alerta. */
+@Composable
+private fun AtalhoRastrear(aoTocar: () -> Unit) {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .padding(top = 18.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .background(Mint.copy(alpha = 0.10f))
+            .clicavel(aoTocar)
+            .padding(horizontal = 15.dp, vertical = 14.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
+            Modifier.size(36.dp).clip(RoundedCornerShape(11.dp)).background(Mint.copy(alpha = 0.22f)),
+            contentAlignment = Alignment.Center
+        ) { Text("\uD83D\uDD0E", fontSize = 17.sp) }
+        Spacer(Modifier.width(13.dp))
+        Column(Modifier.weight(1f)) {
+            Text(stringResource(R.string.rastrear_titulo), color = Tinta,
+                fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+            Text(stringResource(R.string.rastrear_chamada), color = Tinta2,
+                fontSize = 11.5f.sp, lineHeight = 16.sp)
+        }
+        Text("\u2192", color = Mint, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+    }
+}
+
 @Composable
 private fun NotaDesatualizado(quando: Long) {
     Text(

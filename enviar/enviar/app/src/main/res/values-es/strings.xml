@@ -84,8 +84,8 @@
     <string name="nada_encontrado">Ninguna moneda con ese nombre.</string>
 
     <!-- Registro -->
-    <string name="cadastro_titulo">Bienvenido a KriptoBR Mercado</string>
-    <string name="cadastro_texto">Indica tu correo para entrar. Es gratis y pasas a recibir cupones exclusivos de la tienda, alertas y novedades del mercado.</string>
+    <string name="cadastro_titulo">Un cupón exclusivo, solo para quien tiene la app</string>
+    <string name="cadastro_texto">Deja tu correo y recibe cupones de la tienda KriptoBR, alertas del mercado y novedades que valen tu tiempo. Es gratis y cancelas cuando quieras.</string>
     <string name="seu_email">Tu correo</string>
     <string name="seu_nome_opcional">Tu nombre (opcional)</string>
     <string name="aceite">Autorizo a KriptoBR a enviarme cupones, alertas y novedades por correo. Puedo cancelar cuando quiera.</string>
@@ -136,4 +136,17 @@
     <string name="loja_hw">Hardware wallets</string>
     <string name="loja_news">KriptoHoje</string>
     <string name="widget_titulo">BITCOIN</string>
+
+    <!-- Registro por código -->
+    <string name="receber_cupom">Quiero mi cupón</string>
+    <string name="agora_nao">Ahora no</string>
+    <string name="codigo_titulo">Escribe el código que enviamos</string>
+    <string name="codigo_texto">Enviamos un código de 6 dígitos a %1$s. Confirma que la dirección es tuya — y es lo que libera el cupón. Si no lo encuentras, mira en spam.</string>
+    <string name="codigo_rotulo">Código de 6 dígitos</string>
+    <string name="codigo_curto">El código tiene 6 dígitos.</string>
+    <string name="codigo_errado">Código incorrecto. Revisa el correo que enviamos.</string>
+    <string name="codigo_expirado">El código venció. Vuelve y pide uno nuevo.</string>
+    <string name="codigo_rodape">El código vale por 30 minutos. Nada se envía sin tu confirmación.</string>
+    <string name="confirmar">Confirmar</string>
+    <string name="rastrear_chamada">Pega una dirección y mírala en la blockchain</string>
 </resources>

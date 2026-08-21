@@ -84,8 +84,8 @@
     <string name="nada_encontrado">No coin with that name.</string>
 
     <!-- Sign-up -->
-    <string name="cadastro_titulo">Welcome to KriptoBR Market</string>
-    <string name="cadastro_texto">Enter your email to continue. It is free, and you start receiving exclusive store coupons, alerts and market news.</string>
+    <string name="cadastro_titulo">An exclusive coupon, only for app users</string>
+    <string name="cadastro_texto">Leave your email and get KriptoBR store coupons, market alerts and news worth your time. Free, and you can unsubscribe whenever you want.</string>
     <string name="seu_email">Your email</string>
     <string name="seu_nome_opcional">Your name (optional)</string>
     <string name="aceite">I allow KriptoBR to send me coupons, alerts and news by email. I can unsubscribe at any time.</string>
@@ -136,4 +136,17 @@
     <string name="loja_hw">Hardware wallets</string>
     <string name="loja_news">KriptoHoje</string>
     <string name="widget_titulo">BITCOIN</string>
+
+    <!-- Code sign-up -->
+    <string name="receber_cupom">Get my coupon</string>
+    <string name="agora_nao">Not now</string>
+    <string name="codigo_titulo">Type the code we sent</string>
+    <string name="codigo_texto">We sent a 6-digit code to %1$s. It confirms the address is yours — and it is what unlocks the coupon. Check your spam folder if you cannot find it.</string>
+    <string name="codigo_rotulo">6-digit code</string>
+    <string name="codigo_curto">The code has 6 digits.</string>
+    <string name="codigo_errado">Wrong code. Check the email we sent.</string>
+    <string name="codigo_expirado">The code expired. Go back and request a new one.</string>
+    <string name="codigo_rodape">The code is valid for 30 minutes. Nothing is sent without your confirmation.</string>
+    <string name="confirmar">Confirm</string>
+    <string name="rastrear_chamada">Paste an address and see it on the blockchain</string>
 </resources>

@@ -96,8 +96,8 @@
     <string name="nada_encontrado">Nenhuma moeda com esse nome.</string>
 
     <!-- Cadastro -->
-    <string name="cadastro_titulo">Bem-vindo ao KriptoBR Mercado</string>
-    <string name="cadastro_texto">Informe seu e-mail para entrar. É de graça e você passa a receber cupons exclusivos da loja, alertas e as novidades do mercado.</string>
+    <string name="cadastro_titulo">Um cupom exclusivo, só para quem tem o app</string>
+    <string name="cadastro_texto">Deixe seu e-mail e receba cupons da loja KriptoBR, alertas do mercado e as novidades que valem o seu tempo. É de graça e você cancela quando quiser.</string>
     <string name="seu_email">Seu e-mail</string>
     <string name="seu_nome_opcional">Seu nome (opcional)</string>
     <string name="aceite">Autorizo a KriptoBR a me enviar cupons, alertas e novidades por e-mail. Posso cancelar quando quiser.</string>
@@ -140,4 +140,17 @@
     <string name="formato_deitado">Deitado</string>
     <string name="formato_deitado_desc">16:9 — X, LinkedIn e apresentações</string>
     <string name="fechar">Fechar</string>
+
+    <!-- Cadastro por código -->
+    <string name="receber_cupom">Quero meu cupom</string>
+    <string name="agora_nao">Agora não</string>
+    <string name="codigo_titulo">Digite o código que enviamos</string>
+    <string name="codigo_texto">Mandamos um código de 6 dígitos para %1$s. Ele confirma que o e-mail é seu — e é o que libera o cupom. Se não achar, olhe no spam.</string>
+    <string name="codigo_rotulo">Código de 6 dígitos</string>
+    <string name="codigo_curto">O código tem 6 dígitos.</string>
+    <string name="codigo_errado">Código errado. Confira no e-mail que enviamos.</string>
+    <string name="codigo_expirado">O código venceu. Volte e peça um novo.</string>
+    <string name="codigo_rodape">O código vale por 30 minutos. Nada é enviado sem a sua confirmação.</string>
+    <string name="confirmar">Confirmar</string>
+    <string name="rastrear_chamada">Cole um endereço e veja tudo na blockchain</string>
 </resources>

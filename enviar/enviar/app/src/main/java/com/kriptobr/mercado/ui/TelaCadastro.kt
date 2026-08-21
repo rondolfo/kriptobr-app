@@ -8,6 +8,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,7 +38,7 @@ private const val POLITICA = "https://mercado.kriptobr.com/privacidade.html"
  * marca, nunca já marcada, porque consentimento pré-marcado não é consentimento.
  */
 @Composable
-fun TelaCadastro(aoEntrar: () -> Unit) {
+fun TelaCadastro(aoEntrar: () -> Unit, aoAdiar: () -> Unit) {
     val ctx = LocalContext.current
     val escopo = rememberCoroutineScope()
 
@@ -68,14 +69,31 @@ fun TelaCadastro(aoEntrar: () -> Unit) {
         enviando = true
         escopo.launch {
             val limpo = email.trim().lowercase()
-            val ok = Cadastro.enviar(ctx, limpo, nome.trim())
+            val ok = Cadastro.enviarCodigo(ctx, limpo)
             enviando = false
-            if (ok) {
-                Cadastro.guardar(ctx, limpo)
-                enviado = true
-            } else {
-                erro = ctx.getString(R.string.cadastro_falhou)
-            }
+            if (ok) enviado = true else erro = ctx.getString(R.string.cadastro_falhou)
+        }
+    }
+
+    /* Segundo passo: o código que chegou por e-mail. Só depois de conferido o
+       cadastro entra na lista — é o que garante que o endereço existe mesmo. */
+    var codigo by remember { mutableStateOf("") }
+    var conferindo by remember { mutableStateOf(false) }
+    val confirmar: () -> Unit = confirmar@{
+        erro = null
+        if (codigo.trim().length < 6) { erro = ctx.getString(R.string.codigo_curto); return@confirmar }
+        when (Cadastro.conferirCodigo(ctx, codigo)) {
+            Cadastro.Conferencia.ERRADO -> { erro = ctx.getString(R.string.codigo_errado); return@confirmar }
+            Cadastro.Conferencia.EXPIRADO -> { erro = ctx.getString(R.string.codigo_expirado); return@confirmar }
+            Cadastro.Conferencia.CERTO -> Unit
+        }
+        conferindo = true
+        escopo.launch {
+            val limpo = email.trim().lowercase()
+            val ok = Cadastro.entrarNaLista(ctx, limpo, nome.trim())
+            conferindo = false
+            if (ok) { Cadastro.guardar(ctx, limpo); aoEntrar() }
+            else erro = ctx.getString(R.string.cadastro_falhou)
         }
     }
 
@@ -94,7 +112,14 @@ fun TelaCadastro(aoEntrar: () -> Unit) {
             Spacer(Modifier.height(30.dp))
 
             if (enviado) {
-                ConfirmeSeuEmail(email.trim().lowercase(), aoEntrar)
+                PassoDoCodigo(
+                    email = email.trim().lowercase(),
+                    codigo = codigo,
+                    aoMudarCodigo = { codigo = it.filter { c -> c.isDigit() }.take(6); erro = null },
+                    conferindo = conferindo,
+                    erro = erro,
+                    aoConfirmar = confirmar
+                )
                 return@Column
             }
 
@@ -168,10 +193,15 @@ fun TelaCadastro(aoEntrar: () -> Unit) {
             ) {
                 if (enviando) CircularProgressIndicator(color = MintTinta, strokeWidth = 2.dp,
                     modifier = Modifier.height(20.dp).width(20.dp))
-                else Text(stringResource(R.string.entrar_no_app), fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                else Text(stringResource(R.string.receber_cupom), fontWeight = FontWeight.Bold, fontSize = 15.sp)
             }
 
-            Spacer(Modifier.height(18.dp))
+            Spacer(Modifier.height(10.dp))
+            TextButton(onClick = aoAdiar, modifier = Modifier.fillMaxWidth()) {
+                Text(stringResource(R.string.agora_nao), color = Apagado, fontSize = 13.5f.sp)
+            }
+
+            Spacer(Modifier.height(8.dp))
             Text(stringResource(R.string.cadastro_rodape), color = Apagado,
                 fontSize = 11.5f.sp, lineHeight = 16.sp)
             Spacer(Modifier.height(40.dp))
@@ -180,26 +210,64 @@ fun TelaCadastro(aoEntrar: () -> Unit) {
 }
 
 @Composable
-private fun ConfirmeSeuEmail(email: String, aoEntrar: () -> Unit) {
-    val ctx = LocalContext.current
-    Text(stringResource(R.string.confirme_titulo), color = Tinta,
+private fun PassoDoCodigo(
+    email: String,
+    codigo: String,
+    aoMudarCodigo: (String) -> Unit,
+    conferindo: Boolean,
+    erro: String?,
+    aoConfirmar: () -> Unit
+) {
+    Text(stringResource(R.string.codigo_titulo), color = Tinta,
         fontSize = 23.sp, fontWeight = FontWeight.ExtraBold, lineHeight = 29.sp)
     Spacer(Modifier.height(12.dp))
-    Text(stringResource(R.string.confirme_texto, email), color = Tinta2,
+    Text(stringResource(R.string.codigo_texto, email), color = Tinta2,
         fontSize = 13.5f.sp, lineHeight = 20.sp)
-    Spacer(Modifier.height(24.dp))
-    Button(
-        onClick = { abrirCaixaDeEntrada(ctx) },
-        colors = ButtonDefaults.buttonColors(containerColor = Mint, contentColor = MintTinta),
-        modifier = Modifier.fillMaxWidth().height(50.dp)
-    ) { Text(stringResource(R.string.abrir_email), fontWeight = FontWeight.Bold, fontSize = 15.sp) }
-    Spacer(Modifier.height(12.dp))
-    OutlinedButton(
-        onClick = aoEntrar,
-        modifier = Modifier.fillMaxWidth().height(50.dp)
-    ) { Text(stringResource(R.string.ja_confirmei), color = Tinta2, fontSize = 14.sp) }
+
+    Spacer(Modifier.height(22.dp))
+    OutlinedTextField(
+        value = codigo,
+        onValueChange = aoMudarCodigo,
+        singleLine = true,
+        label = { Text(stringResource(R.string.codigo_rotulo), color = Apagado, fontSize = 13.sp) },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
+        textStyle = LocalTextStyle.current.copy(
+            fontSize = 26.sp, fontWeight = FontWeight.Bold, letterSpacing = 7.sp
+        ),
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedBorderColor = Mint, unfocusedBorderColor = Borda,
+            focusedTextColor = Tinta, unfocusedTextColor = Tinta,
+            cursorColor = Mint,
+            focusedContainerColor = Superficie, unfocusedContainerColor = Superficie
+        ),
+        modifier = Modifier.fillMaxWidth()
+    )
+
+    erro?.let {
+        Spacer(Modifier.height(12.dp))
+        Text(it, color = Baixa, fontSize = 12.5f.sp, lineHeight = 17.sp)
+    }
+
     Spacer(Modifier.height(20.dp))
-    Text(stringResource(R.string.confirme_rodape), color = Apagado, fontSize = 11.5f.sp, lineHeight = 16.sp)
+    Button(
+        onClick = aoConfirmar,
+        enabled = !conferindo,
+        colors = ButtonDefaults.buttonColors(containerColor = Mint, contentColor = MintTinta,
+            disabledContainerColor = Superficie2, disabledContentColor = Apagado),
+        modifier = Modifier.fillMaxWidth().height(50.dp)
+    ) {
+        if (conferindo) CircularProgressIndicator(color = MintTinta, strokeWidth = 2.dp,
+            modifier = Modifier.height(20.dp).width(20.dp))
+        else Text(stringResource(R.string.confirmar), fontWeight = FontWeight.Bold, fontSize = 15.sp)
+    }
+
+    Spacer(Modifier.height(14.dp))
+    val ctx = LocalContext.current
+    OutlinedButton(onClick = { abrirCaixaDeEntrada(ctx) }, modifier = Modifier.fillMaxWidth().height(48.dp)) {
+        Text(stringResource(R.string.abrir_email), color = Tinta2, fontSize = 14.sp)
+    }
+    Spacer(Modifier.height(18.dp))
+    Text(stringResource(R.string.codigo_rodape), color = Apagado, fontSize = 11.5f.sp, lineHeight = 16.sp)
     Spacer(Modifier.height(40.dp))
 }
 
