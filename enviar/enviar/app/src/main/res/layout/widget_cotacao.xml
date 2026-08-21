@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Widget da tela inicial.
+
+    Nenhum texto vem de @string aqui: o launcher infla este layout no processo
+    DELE, com o idioma DELE, e por isso o widget aparecia em inglês mesmo com o
+    app em português. Tudo é escrito por código, a partir de um contexto já
+    ajustado para o idioma escolhido — ver WidgetCotacao.desenhar.
+-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/wRaiz"
     android:layout_width="match_parent"
@@ -13,19 +21,21 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/wTitulo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:ellipsize="end"
             android:letterSpacing="0.12"
-            android:text="@string/widget_titulo"
+            android:maxLines="1"
             android:textColor="@color/btc"
             android:textSize="11sp"
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/wMarca"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/marca_curta"
             android:textColor="@color/mint"
             android:textSize="11sp"
             android:textStyle="bold" />
@@ -33,8 +43,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:baselineAligned="false"
         android:orientation="horizontal">
 
@@ -51,7 +60,6 @@
                 android:layout_marginTop="3dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@string/travessao"
                 android:textColor="@color/tinta"
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -66,14 +74,25 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/wEth"
+                android:id="@+id/wFaixa"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:textColor="@color/tinta2"
-                android:textSize="12sp" />
+                android:textColor="@color/apagado"
+                android:textSize="11.5sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/wVolume"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/apagado"
+                android:textSize="11.5sp"
+                android:visibility="gone" />
         </LinearLayout>
 
         <ImageView
@@ -87,11 +106,158 @@
             android:src="@drawable/ic_atualizar" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/wL1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/wL1Nome"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/tinta2"
+            android:textSize="12.5sp" />
+
+        <TextView
+            android:id="@+id/wL1Var"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:maxLines="1"
+            android:textColor="@color/alta"
+            android:textSize="12.5sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/wL2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/wL2Nome"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/tinta2"
+            android:textSize="12.5sp" />
+
+        <TextView
+            android:id="@+id/wL2Var"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:maxLines="1"
+            android:textColor="@color/alta"
+            android:textSize="12.5sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/wL3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/wL3Nome"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/tinta2"
+            android:textSize="12.5sp" />
+
+        <TextView
+            android:id="@+id/wL3Var"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:maxLines="1"
+            android:textColor="@color/alta"
+            android:textSize="12.5sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/wL4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/wL4Nome"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/tinta2"
+            android:textSize="12.5sp" />
+
+        <TextView
+            android:id="@+id/wL4Var"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:maxLines="1"
+            android:textColor="@color/alta"
+            android:textSize="12.5sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/wL5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/wL5Nome"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/tinta2"
+            android:textSize="12.5sp" />
+
+        <TextView
+            android:id="@+id/wL5Var"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:maxLines="1"
+            android:textColor="@color/alta"
+            android:textSize="12.5sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/wRodape"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="5dp"
+        android:ellipsize="end"
         android:maxLines="1"
         android:textColor="@color/apagado"
         android:textSize="11sp" />

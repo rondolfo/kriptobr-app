@@ -305,4 +305,41 @@ object Corretoras {
         }
         return saida
     }
+
+    /** Uma corretora na tela de comparação. */
+    data class Comparacao(
+        val fonte: Fonte,
+        val cotacao: Cotacao?,
+        /** Quanto está acima (+) ou abaixo (−) da média do mercado, em %. */
+        val agio: Double?
+    )
+
+    /**
+     * O preço de uma moeda em todas as corretoras ao mesmo tempo.
+     *
+     * É a pergunta que todo cliente faz antes de comprar — "onde está mais
+     * barato agora?" — e que nenhum site brasileiro responde de forma direta.
+     * O ágio é contra [precoMedia], o preço médio do mercado que o app já tem.
+     */
+    suspend fun compararTodas(
+        simbolo: String,
+        alvo: String,
+        dolar: Double,
+        precoMedia: Double
+    ): List<Comparacao> = coroutineScope {
+        val sim = listOf(simbolo.uppercase())
+        LISTA.filter { it.id != MEDIA }
+            .map { f ->
+                async(Dispatchers.IO) {
+                    val c = runCatching { buscar(f.id, sim, alvo, dolar)[sim[0]] }.getOrNull()
+                    val agio = if (c != null && precoMedia > 0.0)
+                        (c.preco - precoMedia) / precoMedia * 100.0 else null
+                    Comparacao(f, c, agio)
+                }
+            }
+            .awaitAll()
+            /* Quem respondeu primeiro na lista, e sempre do mais barato para o
+               mais caro — que é a ordem em que a pergunta é feita. */
+            .sortedWith(compareBy({ it.cotacao == null }, { it.cotacao?.preco ?: Double.MAX_VALUE }))
+    }
 }

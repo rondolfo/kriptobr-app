@@ -167,6 +167,9 @@ class MainActivity : ComponentActivity() {
         // ficha que abre ao tocar numa moeda, e a escolha de onde vem o preço
         var fichaDe by remember { mutableStateOf<Moeda?>(null) }
         var escolhendoFonte by remember { mutableStateOf(false) }
+        var comparando by remember { mutableStateOf(false) }
+        var naCarteira by remember { mutableStateOf(false) }
+        var nosAjustes by remember { mutableStateOf(false) }
         var fonte by remember { mutableStateOf(Guardados.fonte(ctx)) }
         LaunchedEffect(Unit) {
             Cadastro.marcarUso(ctx)
@@ -183,6 +186,26 @@ class MainActivity : ComponentActivity() {
 
         if (rastreando) {
             TelaRastrear(aoFechar = { rastreando = false })
+            return
+        }
+
+        if (comparando) {
+            TelaComparar(mercado = mercado, aoFechar = { comparando = false })
+            return
+        }
+
+        if (naCarteira) {
+            TelaCarteira(mercado = mercado, aoFechar = { naCarteira = false })
+            return
+        }
+
+        if (nosAjustes) {
+            TelaAjustes(
+                aoFechar = { nosAjustes = false },
+                // trocar de moeda muda o que a API precisa buscar, não só como desenhar
+                aoMudarMoeda = { atualizar() },
+                aoMudarWidget = { WidgetCotacao.redesenharTodos(ctx) }
+            )
             return
         }
 
@@ -219,7 +242,8 @@ class MainActivity : ComponentActivity() {
                     aoRastrear = { rastreando = true },
                     aoCompartilhar = { compartilhando = true },
                     aoCadastrar = if (Cadastro.jaCadastrado(ctx)) null else ({ mostrarCadastro = true }),
-                    aoTrocarFonte = { escolhendoFonte = true }
+                    aoTrocarFonte = { escolhendoFonte = true },
+                    aoAjustes = { nosAjustes = true }
                 )
             },
             bottomBar = { BarraAbas(aba, novas) { abaIndice = it.ordinal } }
@@ -235,7 +259,9 @@ class MainActivity : ComponentActivity() {
                         aoRastrear = { rastreando = true },
                         aoTocarMoeda = { fichaDe = it },
                         fonte = fonte,
-                        aoTrocarFonte = { escolhendoFonte = true }
+                        aoTrocarFonte = { escolhendoFonte = true },
+                        aoComparar = { comparando = true },
+                        aoAbrirCarteira = { naCarteira = true }
                     )
                     Aba.NOTICIAS -> TelaNoticias(
                         noticias = noticias,
@@ -301,7 +327,8 @@ class MainActivity : ComponentActivity() {
         aoRastrear: () -> Unit,
         aoCompartilhar: () -> Unit,
         aoCadastrar: (() -> Unit)?,
-        aoTrocarFonte: () -> Unit
+        aoTrocarFonte: () -> Unit,
+        aoAjustes: () -> Unit
     ) {
         TopAppBar(
             title = {
@@ -318,7 +345,7 @@ class MainActivity : ComponentActivity() {
             },
             actions = {
                 BotaoIdioma(aoTrocarIdioma)
-                MenuExtras(aoRastrear, aoCompartilhar, aoCadastrar, aoTrocarFonte)
+                MenuExtras(aoRastrear, aoCompartilhar, aoCadastrar, aoTrocarFonte, aoAjustes)
                 if (aba == Aba.MERCADO || aba == Aba.NOTICIAS) {
                     if (carregando) {
                         CircularProgressIndicator(
@@ -388,7 +415,8 @@ class MainActivity : ComponentActivity() {
         aoRastrear: () -> Unit,
         aoCompartilhar: () -> Unit,
         aoCadastrar: (() -> Unit)?,
-        aoTrocarFonte: () -> Unit
+        aoTrocarFonte: () -> Unit,
+        aoAjustes: () -> Unit
     ) {
         var aberto by remember { mutableStateOf(false) }
         Box {
@@ -408,8 +436,13 @@ class MainActivity : ComponentActivity() {
                 )
                 DropdownMenuItem(
                     text = { Text(stringResource(R.string.fonte_titulo), color = Tinta, fontSize = 14.sp) },
-                    leadingIcon = { Icon(Icons.Filled.Settings, null, tint = Mint) },
+                    leadingIcon = { Icon(Icons.Filled.Refresh, null, tint = Mint) },
                     onClick = { aberto = false; aoTrocarFonte() }
+                )
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.ajustes_titulo), color = Tinta, fontSize = 14.sp) },
+                    leadingIcon = { Icon(Icons.Filled.Settings, null, tint = Mint) },
+                    onClick = { aberto = false; aoAjustes() }
                 )
                 if (aoCadastrar != null) DropdownMenuItem(
                     text = { Text(stringResource(R.string.receber_cupom), color = Tinta, fontSize = 14.sp) },

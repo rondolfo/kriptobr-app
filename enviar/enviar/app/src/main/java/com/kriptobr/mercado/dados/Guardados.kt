@@ -28,11 +28,20 @@ object Guardados {
      * na mão, a moeda acompanha: português mostra em real, inglês e espanhol em
      * dólar — do mesmo jeito que o painel na web.
      */
-    fun fiat(): String = when (idiomaValendo) {
-        "pt" -> "brl"
-        "en", "es" -> "usd"
-        else -> if (Locale.getDefault().country.equals("BR", true)) "brl" else "usd"
+    fun fiat(): String {
+        // escolha explícita do usuário ganha do idioma
+        if (moedaValendo.isNotEmpty()) return moedaValendo
+        return when (idiomaValendo) {
+            "pt" -> "brl"
+            "en", "es" -> "usd"
+            else -> if (Locale.getDefault().country.equals("BR", true)) "brl" else "usd"
+        }
     }
+
+    /* Preenchido pelo App no início do processo, como o idioma. Vazio = seguir
+       o idioma, que é o comportamento antigo. */
+    @Volatile
+    var moedaValendo: String = ""
 
     /* Preenchido pelo App no início do processo. Sem contexto aqui, Formato
        precisa continuar podendo chamar fiat() sem receber nada. */

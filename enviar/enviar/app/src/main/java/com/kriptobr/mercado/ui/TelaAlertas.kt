@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kriptobr.mercado.R
 import com.kriptobr.mercado.alerta.Alerta
+import com.kriptobr.mercado.alerta.TipoAlerta
 import com.kriptobr.mercado.dados.Formato
 import com.kriptobr.mercado.dados.Mercado
 import com.kriptobr.mercado.dados.Moeda
@@ -36,6 +37,11 @@ fun TelaAlertas(
     var acima by remember { mutableStateOf(true) }
     var valor by remember { mutableStateOf("") }
     var abrirLista by remember { mutableStateOf(false) }
+    /* Dois feitios de alerta na mesma tela: o de preço fixo, que envelhece
+       (R$ 300 mil deixa de fazer sentido em um mês), e o de variação, que não
+       envelhece nunca — "me avise se cair mais de 5%" vale para sempre. */
+    var tipo by remember { mutableStateOf(TipoAlerta.PRECO) }
+    var janela by remember { mutableStateOf(1) }
 
     LazyColumn(
         Modifier.fillMaxSize(),
@@ -43,6 +49,17 @@ fun TelaAlertas(
     ) {
         item {
             Cartao(Modifier.fillMaxWidth().padding(top = 6.dp)) {
+                Rotulo(stringResource(R.string.alerta_feitio))
+                Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(11.dp)).background(Superficie2)) {
+                    Aba(stringResource(R.string.alerta_tipo_preco), tipo == TipoAlerta.PRECO, Modifier.weight(1f)) {
+                        tipo = TipoAlerta.PRECO; valor = ""
+                    }
+                    Aba(stringResource(R.string.alerta_tipo_variacao), tipo == TipoAlerta.VARIACAO, Modifier.weight(1f)) {
+                        tipo = TipoAlerta.VARIACAO; valor = ""
+                    }
+                }
+
+                Spacer(Modifier.height(12.dp))
                 Rotulo(stringResource(R.string.moeda))
                 Box {
                     Row(
@@ -83,16 +100,36 @@ fun TelaAlertas(
                 Row(
                     Modifier.fillMaxWidth().clip(RoundedCornerShape(11.dp)).background(Superficie2)
                 ) {
-                    Aba(stringResource(R.string.acima_de), acima, Modifier.weight(1f)) { acima = true }
-                    Aba(stringResource(R.string.abaixo_de), !acima, Modifier.weight(1f)) { acima = false }
+                    Aba(
+                        stringResource(if (tipo == TipoAlerta.PRECO) R.string.acima_de else R.string.alta_de),
+                        acima, Modifier.weight(1f)
+                    ) { acima = true }
+                    Aba(
+                        stringResource(if (tipo == TipoAlerta.PRECO) R.string.abaixo_de else R.string.queda_de),
+                        !acima, Modifier.weight(1f)
+                    ) { acima = false }
+                }
+
+                if (tipo == TipoAlerta.VARIACAO) {
+                    Spacer(Modifier.height(12.dp))
+                    Rotulo(stringResource(R.string.em_quanto_tempo))
+                    Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(11.dp)).background(Superficie2)) {
+                        Aba(stringResource(R.string.janela_1h), janela == 1, Modifier.weight(1f)) { janela = 1 }
+                        Aba(stringResource(R.string.janela_24h), janela == 24, Modifier.weight(1f)) { janela = 24 }
+                    }
                 }
 
                 Spacer(Modifier.height(12.dp))
-                Rotulo(stringResource(R.string.valor))
+                Rotulo(stringResource(if (tipo == TipoAlerta.PRECO) R.string.valor else R.string.percentual))
                 OutlinedTextField(
                     value = valor,
                     onValueChange = { t -> valor = t.filter { it.isDigit() || it == '.' || it == ',' } },
-                    placeholder = { Text(exemploValor(escolhida), color = Apagado) },
+                    placeholder = {
+                        Text(
+                            if (tipo == TipoAlerta.PRECO) exemploValor(escolhida) else "5",
+                            color = Apagado
+                        )
+                    },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                     modifier = Modifier.fillMaxWidth(),
@@ -105,7 +142,9 @@ fun TelaAlertas(
                 )
 
                 val alvo = valor.replace(".", "").replace(",", ".").toDoubleOrNull()
-                val podeCriar = escolhida != null && alvo != null && alvo > 0
+                // percentual acima de 100 seria alerta que nunca dispara
+                val podeCriar = escolhida != null && alvo != null && alvo > 0 &&
+                    (tipo == TipoAlerta.PRECO || alvo <= 100.0)
                 Spacer(Modifier.height(12.dp))
                 Button(
                     onClick = {
@@ -115,7 +154,8 @@ fun TelaAlertas(
                             Alerta(
                                 id = System.currentTimeMillis(),
                                 moedaId = m.id, simbolo = m.simbolo, nome = m.nome,
-                                acima = acima, alvo = a
+                                acima = acima, alvo = a,
+                                tipo = tipo, janelaHoras = janela
                             )
                         )
                         valor = ""
@@ -188,9 +228,12 @@ private fun LinhaAlerta(a: Alerta, atual: Moeda?, aoAlternar: () -> Unit, aoRemo
             Spacer(Modifier.width(11.dp))
             Column(Modifier.weight(1f)) {
                 Text(
-                    stringResource(
+                    if (a.tipo == TipoAlerta.PRECO) stringResource(
                         if (a.acima) R.string.alerta_acima else R.string.alerta_abaixo,
                         a.simbolo, Formato.dinheiro(a.alvo)
+                    ) else stringResource(
+                        if (a.acima) R.string.alerta_var_alta else R.string.alerta_var_queda,
+                        a.simbolo, Formato.porcento(a.alvo, comSeta = false), a.janelaHoras
                     ),
                     color = Tinta, fontSize = 13.sp, fontWeight = FontWeight.SemiBold
                 )
@@ -215,6 +258,10 @@ private fun LinhaAlerta(a: Alerta, atual: Moeda?, aoAlternar: () -> Unit, aoRemo
 @Composable
 private fun subtitulo(a: Alerta, atual: Moeda?): String {
     if (!a.ativo) return stringResource(R.string.pausado)
+    if (a.tipo == TipoAlerta.VARIACAO) {
+        val descansando = System.currentTimeMillis() - a.disparadoEm < Alerta.DESCANSO_VARIACAO
+        return stringResource(if (descansando) R.string.variacao_descansando else R.string.variacao_vigiando)
+    }
     if (a.disparadoEm > 0) return stringResource(R.string.ja_disparou)
     val preco = atual?.preco ?: return stringResource(R.string.aguardando_preco)
     val falta = abs(a.alvo - preco) / preco * 100

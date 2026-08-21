@@ -43,9 +43,17 @@ object Miniaturas {
         return BitmapFactory.decodeByteArray(dados, 0, dados.size, opcoes)
     }
 
-    /** O selo de bloqueio do portal: quadrado e pequeno. Foto de notícia não é assim. */
+    /**
+     * O selo de bloqueio do portal: quadrado e pequeno.
+     *
+     * Agora que [com.kriptobr.mercado.dados.Noticias] pede sempre o tamanho
+     * "medium" — 300 px de largura, proporção preservada —, imagem legítima
+     * nunca chega aqui quadrada. Antes chegava, porque o app pedia o
+     * "thumbnail" do WordPress, que é 150x150 cortado: era a foto certa sendo
+     * confundida com o selo, e a lista aparecia sem imagem nenhuma.
+     */
     private fun pareceSelo(b: Bitmap): Boolean =
-        b.width == b.height && b.width in 1..220
+        b.width == b.height && b.width in 1..210
 
     suspend fun carregar(ctx: Context, url: String, ladoPx: Int): Bitmap? =
         withContext(Dispatchers.IO) {

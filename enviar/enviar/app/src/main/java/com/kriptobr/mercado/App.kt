@@ -1,6 +1,7 @@
 package com.kriptobr.mercado
 
 import android.app.Application
+import com.kriptobr.mercado.dados.Ajustes
 import com.kriptobr.mercado.dados.Idioma
 
 /**
@@ -13,5 +14,6 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         Idioma.aplicarNoProcesso(this)
+        Ajustes.carregarNoProcesso(this)
     }
 }

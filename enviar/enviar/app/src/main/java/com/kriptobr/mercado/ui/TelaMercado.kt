@@ -33,7 +33,9 @@ fun TelaMercado(
     aoRastrear: () -> Unit,
     aoTocarMoeda: (Moeda) -> Unit,
     fonte: String,
-    aoTrocarFonte: () -> Unit
+    aoTrocarFonte: () -> Unit,
+    aoComparar: () -> Unit,
+    aoAbrirCarteira: () -> Unit
 ) {
     val btc = mercado.acharPor("bitcoin")
     val secundarias = listOf("ethereum", "solana").mapNotNull { mercado.acharPor(it) }
@@ -72,6 +74,24 @@ fun TelaMercado(
         /* O rastreador estava escondido no menu de três pontos e ninguém achava.
            Aqui ele fica no caminho de quem rola a tela — que é todo mundo. */
         if (temDados) item { AtalhoRastrear(aoRastrear) }
+        /* Os dois recursos que dão mais motivo para voltar ao app ficam à vista.
+           No menu de três pontos ninguém achava — foi a lição do rastreador. */
+        if (temDados) item {
+            Row(Modifier.fillMaxWidth().padding(top = 10.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                Box(Modifier.weight(1f)) {
+                    AtalhoPequeno(
+                        stringResource(R.string.comparar_titulo),
+                        stringResource(R.string.comparar_chamada), aoComparar
+                    )
+                }
+                Box(Modifier.weight(1f)) {
+                    AtalhoPequeno(
+                        stringResource(R.string.carteira_titulo),
+                        stringResource(R.string.carteira_chamada), aoAbrirCarteira
+                    )
+                }
+            }
+        }
         if (temDados || !carregando) item {
             TituloSecao(stringResource(R.string.minha_lista), stringResource(R.string.editar), aoEditarLista)
         }
@@ -79,6 +99,23 @@ fun TelaMercado(
         // "sua lista está vazia" só quando ela está mesmo vazia — não quando a
         // internet falhou, que era o caso em que mais aparecia
         if (lista.isEmpty() && !carregando && erro == null) item { VaziaLista(aoEditarLista) }
+    }
+}
+
+/** Cartão curto de atalho, do tamanho de meia tela. */
+@Composable
+private fun AtalhoPequeno(titulo: String, chamada: String, aoTocar: () -> Unit) {
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(14.dp))
+            .background(Superficie)
+            .clicavel(aoTocar)
+            .padding(horizontal = 13.dp, vertical = 12.dp)
+    ) {
+        Text(titulo, color = Tinta, fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
+        Spacer(Modifier.height(3.dp))
+        Text(chamada, color = Apagado, fontSize = 11.sp, lineHeight = 15.sp)
     }
 }
 

@@ -15,6 +15,10 @@ import androidx.core.app.NotificationManagerCompat
 object Avisos {
     const val CANAL_ALERTAS = "kriptobr_precos"
     const val CANAL_MARCA = "kriptobr_avisos"
+    /* Canais separados de propósito: quem não quiser o resumo da manhã desliga
+       só ele, nas configurações do Android, sem perder o alerta de preço. */
+    const val CANAL_RESUMO = "kriptobr_resumo"
+    const val CANAL_NOTICIAS = "kriptobr_noticias"
 
     fun criarCanais(ctx: Context) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
@@ -26,6 +30,14 @@ object Avisos {
         nm.createNotificationChannel(
             NotificationChannel(CANAL_MARCA, ctx.getString(R.string.canal_marca), NotificationManager.IMPORTANCE_DEFAULT)
                 .apply { description = ctx.getString(R.string.canal_marca_desc) }
+        )
+        nm.createNotificationChannel(
+            NotificationChannel(CANAL_RESUMO, ctx.getString(R.string.canal_resumo), NotificationManager.IMPORTANCE_LOW)
+                .apply { description = ctx.getString(R.string.canal_resumo_desc) }
+        )
+        nm.createNotificationChannel(
+            NotificationChannel(CANAL_NOTICIAS, ctx.getString(R.string.canal_noticias), NotificationManager.IMPORTANCE_LOW)
+                .apply { description = ctx.getString(R.string.canal_noticias_desc) }
         )
     }
 
