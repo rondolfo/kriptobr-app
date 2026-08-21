@@ -87,6 +87,13 @@ fun FichaMoeda(
             }
 
             Spacer(Modifier.height(18.dp))
+            /* Livro de ofertas: só existe com uma corretora fixada. A média do
+               mercado não tem livro, e repetir o preço nos dois campos seria
+               fingir que tem. */
+            if (moeda.venda > 0.0 && moeda.compra > 0.0) {
+                LinhaDado(stringResource(R.string.rot_venda), Formato.dinheiroCheio(moeda.venda))
+                LinhaDado(stringResource(R.string.rot_compra), Formato.dinheiroCheio(moeda.compra))
+            }
             if (moeda.volume24h > 0.0) {
                 LinhaDado(stringResource(R.string.ficha_volume), Formato.compacto(moeda.volume24h))
             }

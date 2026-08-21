@@ -171,9 +171,7 @@
     <string name="widget_quantas">How many coins besides Bitcoin</string>
     <string name="widget_mostrar_faixa">Show today\'s high and low</string>
     <string name="widget_mostrar_volume">Show traded volume</string>
-    <string name="widget_ajuda">The widget uses the same exchange and currency chosen here. If it looks cramped on the home screen, long-press it and drag the edges so more rows fit.</string>
-    <string name="widget_faixa">High %1$s · Low %2$s</string>
-    <string name="widget_volume">Vol %1$s</string>
+    <string name="widget_ajuda">The widget uses the same exchange and currency chosen here. Ask and Bid come from the exchange order book — with the market average that column is hidden, because an average has no book. If it looks cramped on the home screen, long-press it and drag the edges.</string>
     <string name="ajustes_avisos">PHONE NOTIFICATIONS</string>
     <string name="aviso_resumo_rotulo">Morning market summary</string>
     <string name="aviso_resumo_ajuda">One notification around 9am with the Bitcoin price, the daily change, the fear and greed index and the dollar.</string>
@@ -229,4 +227,12 @@
         <item quantity="one">One new article on KriptoHoje</item>
         <item quantity="other">%d new articles on KriptoHoje</item>
     </plurals>
+    <string name="rot_venda">Ask</string>
+    <string name="rot_compra">Bid</string>
+    <string name="rot_24h">24h</string>
+    <string name="rot_vol">Vol</string>
+    <string name="rot_max">High</string>
+    <string name="rot_min">Low</string>
+    <string name="fonte_media_curta">Average</string>
+    <string name="widget_sem_livro">Pin an exchange to see Ask/Bid</string>
 </resources>

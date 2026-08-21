@@ -13,6 +13,11 @@ data class Moeda(
     val maxima24h: Double = 0.0,
     val minima24h: Double = 0.0,
     val volume24h: Double = 0.0,
+    /* Livro de ofertas da corretora escolhida: venda = quanto custa comprar
+       agora, compra = quanto pagam para tirar de você. Zero quando o preço vem
+       da média do mercado, que não tem livro. */
+    val venda: Double = 0.0,
+    val compra: Double = 0.0,
     val historico: List<Double> = emptyList(),
     /** Corretora de onde veio este preço. Vazio = média do mercado. */
     val fonte: String = "",

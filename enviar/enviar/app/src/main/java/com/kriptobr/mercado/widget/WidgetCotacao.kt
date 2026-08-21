@@ -22,9 +22,11 @@ import com.kriptobr.mercado.dados.Idioma
 import com.kriptobr.mercado.dados.Moeda
 
 /**
- * Widget da tela inicial.
+ * Widget da tela inicial, no formato de painel de corretora: marca, par, preço
+ * grande e uma grade de seis números — venda, compra, variação, volume, máxima
+ * e mínima.
  *
- * Duas regras de ouro aqui:
+ * Três regras de ouro aqui:
  *
  * 1. **Nunca acessa a rede.** Só desenha o último preço guardado, que é sempre
  *    instantâneo. Quem busca da internet é o WorkManager, que pode demorar o
@@ -32,8 +34,10 @@ import com.kriptobr.mercado.dados.Moeda
  *    conexão" na primeira versão.
  * 2. **Nenhum texto vem do XML.** O launcher infla o layout no processo dele,
  *    com o idioma do aparelho — era por isso que o widget continuava em inglês
- *    com o app em português. Aqui todo texto é escrito por código, a partir de
- *    um contexto já ajustado para o idioma que a pessoa escolheu.
+ *    com o app em português.
+ * 3. **Não inventa número.** Venda e compra são o livro de ofertas de uma
+ *    corretora; a média do mercado não tem livro. Sem corretora escolhida, essa
+ *    coluna simplesmente sai da tela em vez de mostrar o preço repetido.
  */
 class WidgetCotacao : AppWidgetProvider() {
 
@@ -58,7 +62,7 @@ class WidgetCotacao : AppWidgetProvider() {
     companion object {
         const val ACAO_ATUALIZAR = "com.kriptobr.mercado.ATUALIZAR_WIDGET"
 
-        /** Os cinco pares de linhas extras que existem no layout. */
+        /** As cinco linhas de moedas extras que existem no layout. */
         private val LINHAS = listOf(
             Triple(R.id.wL1, R.id.wL1Nome, R.id.wL1Var),
             Triple(R.id.wL2, R.id.wL2Nome, R.id.wL2Var),
@@ -90,11 +94,28 @@ class WidgetCotacao : AppWidgetProvider() {
             }
         }
 
+        /** Escreve uma célula da grade: rótulo pequeno + valor. */
+        private fun celula(rv: RemoteViews, rotulo: Int, valor: Int, texto: String?, numero: String) {
+            rv.setTextViewText(rotulo, texto ?: "")
+            rv.setTextViewText(valor, numero)
+        }
+
+        /* Números da grade saem sem "R$": o par no cabeçalho já diz a moeda, e
+           cada caractere economizado é largura que o número não perde no corte.
+           Acima de dez mil os centavos também caem — em "390.605,00" eles são
+           ruído, e são justamente os três caracteres que faziam o valor sumir
+           num widget de três células. */
+        private fun seco(v: Double): String = when {
+            v >= 10_000 -> Formato.numero(v, 0)
+            v >= 1.0 -> Formato.numero(v, 2, 2)
+            else -> Formato.numero(v, 6, 2)
+        }
+
         private fun desenhar(
             ctx: Context,
             gerente: AppWidgetManager,
             ids: IntArray,
-            rodapeForcado: String? = null
+            avisoForcado: String? = null
         ) {
             /* Contexto no idioma escolhido — e moeda carregada, porque este
                processo pode ter acordado pelo widget, sem ninguém abrir a tela. */
@@ -103,58 +124,87 @@ class WidgetCotacao : AppWidgetProvider() {
 
             val guardado = Guardados.mercadoGuardado(ctx)
             val btc = guardado.acharPor("bitcoin")
+            val fiat = Guardados.fiat().uppercase()
             val rv = RemoteViews(ctx.packageName, R.layout.widget_cotacao)
 
-            rv.setTextViewText(R.id.wMarca, c.getString(R.string.marca_curta))
-            rv.setTextViewText(
-                R.id.wTitulo,
-                (btc?.nome ?: c.getString(R.string.widget_titulo)).uppercase()
-            )
+            rv.setImageViewResource(R.id.wLogo, R.drawable.logo_kriptobr)
 
             if (btc == null) {
                 // Primeiríssima vez, antes de qualquer busca terminar.
+                rv.setTextViewText(R.id.wPar, c.getString(R.string.widget_titulo))
                 rv.setTextViewText(R.id.wPreco, c.getString(R.string.travessao))
-                rv.setTextViewText(R.id.wVar, "")
-                rv.setViewVisibility(R.id.wFaixa, View.GONE)
-                rv.setViewVisibility(R.id.wVolume, View.GONE)
+                listOf(R.id.wColA, R.id.wColB, R.id.wColC).forEach { rv.setViewVisibility(it, View.GONE) }
                 LINHAS.forEach { rv.setViewVisibility(it.first, View.GONE) }
+                rv.setViewVisibility(R.id.wRodape, View.VISIBLE)
                 rv.setTextViewText(
                     R.id.wRodape,
-                    rodapeForcado ?: c.getString(R.string.widget_primeira_vez)
+                    avisoForcado ?: c.getString(R.string.widget_primeira_vez)
                 )
                 ligarBotoes(ctx, rv)
                 ids.forEach { gerente.updateAppWidget(it, rv) }
                 return
             }
 
-            rv.setTextViewText(R.id.wPreco, Formato.dinheiro(btc.preco))
-            rv.setTextViewText(R.id.wVar, Formato.porcento(btc.variacao24h))
-            rv.setTextColor(R.id.wVar, ctx.getColor(if (btc.variacao24h >= 0) R.color.alta else R.color.baixa))
+            // ------------------------------------------------------ cabeçalho
+            val fonte = btc.fonte
+            val nomeFonte = if (fonte.isNotEmpty() && fonte != Corretoras.MEDIA) {
+                Corretoras.nomeDe(fonte)
+            } else {
+                c.getString(R.string.fonte_media_curta)
+            }
+            /* Só o par no cabeçalho. A corretora e a hora foram para o rodapé:
+               num widget de três células, "BTC/BRL · Mercado Bitcoin" cortava o
+               preço grande ao lado, que é o número que a pessoa quer ver. */
+            rv.setTextViewText(R.id.wPar, "${btc.simbolo}/$fiat")
+            /* Sem símbolo de moeda: o par ao lado já diz "BTC/BRL", e o espaço
+               que o "R$" ocuparia vale mais para o número não ser cortado. */
+            rv.setTextViewText(
+                R.id.wPreco,
+                if (btc.preco >= 1.0) Formato.numero(btc.preco, 2, 2) else Formato.numero(btc.preco, 6, 2)
+            )
 
-            // máxima e mínima do dia
-            val temFaixa = Ajustes.widgetFaixa(ctx) && btc.maxima24h > 0.0 && btc.minima24h > 0.0
-            rv.setViewVisibility(R.id.wFaixa, if (temFaixa) View.VISIBLE else View.GONE)
-            if (temFaixa) {
-                rv.setTextViewText(
-                    R.id.wFaixa,
-                    c.getString(
-                        R.string.widget_faixa,
-                        Formato.dinheiro(btc.maxima24h), Formato.dinheiro(btc.minima24h)
-                    )
-                )
+
+            // -------------------------------------- coluna A: livro de ofertas
+            val temLivro = btc.venda > 0.0 && btc.compra > 0.0
+            rv.setViewVisibility(R.id.wColA, if (temLivro) View.VISIBLE else View.GONE)
+            if (temLivro) {
+                celula(rv, R.id.wVendaL, R.id.wVendaV,
+                    c.getString(R.string.rot_venda), seco(btc.venda))
+                celula(rv, R.id.wCompraL, R.id.wCompraV,
+                    c.getString(R.string.rot_compra), seco(btc.compra))
             }
 
-            // volume negociado
+            // ------------------------------ coluna B: variação e volume do dia
+            /* Volta a mostrar: o launcher reaplica as ações sobre a árvore de
+               views que já existe, então um GONE do desenho anterior (o da
+               primeira vez, sem dado nenhum) sobreviveria para sempre. */
+            rv.setViewVisibility(R.id.wColB, View.VISIBLE)
+            celula(rv, R.id.wVarL, R.id.wVarV,
+                c.getString(R.string.rot_24h), Formato.porcento(btc.variacao24h, comSeta = false)
+                    .let { if (btc.variacao24h >= 0) "+$it" else "−$it" })
+            rv.setTextColor(
+                R.id.wVarV,
+                ctx.getColor(if (btc.variacao24h >= 0) R.color.alta else R.color.baixa)
+            )
             val temVolume = Ajustes.widgetVolume(ctx) && btc.volume24h > 0.0
-            rv.setViewVisibility(R.id.wVolume, if (temVolume) View.VISIBLE else View.GONE)
+            rv.setViewVisibility(R.id.wVolL, if (temVolume) View.VISIBLE else View.INVISIBLE)
+            rv.setViewVisibility(R.id.wVolV, if (temVolume) View.VISIBLE else View.INVISIBLE)
             if (temVolume) {
-                rv.setTextViewText(
-                    R.id.wVolume,
-                    c.getString(R.string.widget_volume, Formato.compacto(btc.volume24h))
-                )
+                celula(rv, R.id.wVolL, R.id.wVolV,
+                    c.getString(R.string.rot_vol), Formato.compacto(btc.volume24h, comMoeda = false))
             }
 
-            // as moedas extras que a pessoa escolheu mostrar
+            // -------------------------------------- coluna C: máxima e mínima
+            val temFaixa = Ajustes.widgetFaixa(ctx) && btc.maxima24h > 0.0 && btc.minima24h > 0.0
+            rv.setViewVisibility(R.id.wColC, if (temFaixa) View.VISIBLE else View.GONE)
+            if (temFaixa) {
+                celula(rv, R.id.wMaxL, R.id.wMaxV,
+                    c.getString(R.string.rot_max), seco(btc.maxima24h))
+                celula(rv, R.id.wMinL, R.id.wMinV,
+                    c.getString(R.string.rot_min), seco(btc.minima24h))
+            }
+
+            // ------------------------------------ as moedas extras escolhidas
             val extras: List<Moeda> = guardado.moedas
                 .filter { it.id != "bitcoin" }
                 .take(Ajustes.widgetQuantas(ctx))
@@ -167,17 +217,15 @@ class WidgetCotacao : AppWidgetProvider() {
                 rv.setTextColor(variacao, ctx.getColor(if (m.variacao24h >= 0) R.color.alta else R.color.baixa))
             }
 
-            /* No rodapé: de onde veio o preço e de quando ele é. Quem fixou uma
-               corretora precisa lembrar disso ao olhar o número na tela inicial. */
-            val hora = Formato.hora(guardado.atualizadoEm)
-            val fonte = btc.fonte
+            /* Rodapé: de onde veio o preço e de quando ele é. Enquanto não
+               houver corretora fixada, ele empresta o espaço para dizer onde
+               ligar venda e compra — e volta ao normal assim que ela existir. */
+            val semCorretora = fonte.isEmpty() || fonte == Corretoras.MEDIA
             rv.setTextViewText(
                 R.id.wRodape,
-                rodapeForcado ?: if (fonte.isNotEmpty() && fonte != Corretoras.MEDIA) {
-                    "${Corretoras.nomeDe(fonte)} · $hora"
-                } else {
-                    c.getString(R.string.widget_as, hora)
-                }
+                avisoForcado
+                    ?: if (semCorretora) c.getString(R.string.widget_sem_livro)
+                    else "$nomeFonte · ${Formato.hora(guardado.atualizadoEm)}"
             )
 
             ligarBotoes(ctx, rv)

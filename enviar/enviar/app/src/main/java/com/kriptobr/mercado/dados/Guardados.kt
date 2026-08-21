@@ -101,6 +101,7 @@ object Guardados {
                 put("preco", c.preco); put("var", c.variacao24h); put("cap", c.capMercado)
                 put("alta", c.maxima24h); put("baixa", c.minima24h); put("vol", c.volume24h)
                 put("fonte", c.fonte); put("conv", c.convertido)
+                put("venda", c.venda); put("compra", c.compra)
                 put("hist", JSONArray(c.historico.takeLast(60)))
             })
         }
@@ -132,6 +133,8 @@ object Guardados {
                 minima24h = o.optDouble("baixa", 0.0),
                 volume24h = o.optDouble("vol", 0.0),
                 historico = h?.let { s -> (0 until s.length()).map { s.getDouble(it) } } ?: emptyList(),
+                venda = o.optDouble("venda", 0.0),
+                compra = o.optDouble("compra", 0.0),
                 fonte = o.optString("fonte", ""),
                 convertido = o.optBoolean("conv", false)
             )

@@ -171,9 +171,7 @@
     <string name="widget_quantas">Cuántas monedas además de Bitcoin</string>
     <string name="widget_mostrar_faixa">Mostrar máximo y mínimo del día</string>
     <string name="widget_mostrar_volume">Mostrar volumen negociado</string>
-    <string name="widget_ajuda">El widget usa la misma casa de cambio y la misma moneda elegidas aquí. Si queda pequeño, mantén el dedo sobre él y arrastra los bordes para que quepan más líneas.</string>
-    <string name="widget_faixa">Máx %1$s · Mín %2$s</string>
-    <string name="widget_volume">Vol %1$s</string>
+    <string name="widget_ajuda">El widget usa la misma casa de cambio y la misma moneda elegidas aquí. Venta y Compra son el libro de órdenes de la casa de cambio — con el promedio del mercado esa columna no aparece, porque un promedio no tiene libro. Si queda apretado, mantén el dedo sobre él y arrastra los bordes.</string>
     <string name="ajustes_avisos">AVISOS EN EL CELULAR</string>
     <string name="aviso_resumo_rotulo">Resumen del mercado por la mañana</string>
     <string name="aviso_resumo_ajuda">Una notificación cerca de las 9h con el precio del Bitcoin, la variación del día, el índice de miedo y codicia y el dólar.</string>
@@ -229,4 +227,12 @@
         <item quantity="one">Una noticia nueva en KriptoHoje</item>
         <item quantity="other">%d noticias nuevas en KriptoHoje</item>
     </plurals>
+    <string name="rot_venda">Venta</string>
+    <string name="rot_compra">Compra</string>
+    <string name="rot_24h">24h</string>
+    <string name="rot_vol">Vol</string>
+    <string name="rot_max">Máx</string>
+    <string name="rot_min">Mín</string>
+    <string name="fonte_media_curta">Promedio</string>
+    <string name="widget_sem_livro">Fija una casa de cambio para ver Venta/Compra</string>
 </resources>

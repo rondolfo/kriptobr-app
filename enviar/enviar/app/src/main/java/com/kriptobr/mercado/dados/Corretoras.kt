@@ -51,13 +51,20 @@ object Corretoras {
         val baixa: Double?,
         val volume: Double?,
         val variacao: Double?,
-        val convertido: Boolean
+        val convertido: Boolean,
+        /* Livro de ofertas: quanto custa comprar agora (venda = melhor oferta de
+           venda) e quanto pagam para tirar de você (compra = melhor oferta de
+           compra). Só existe quando há uma corretora escolhida — média de
+           mercado não tem livro. */
+        val venda: Double? = null,
+        val compra: Double? = null
     )
 
     /* Cotação crua, ainda na moeda da corretora. */
     private data class Crua(
         val preco: Double, val alta: Double?, val baixa: Double?,
-        val volume: Double?, val variacao: Double?, val em: String
+        val volume: Double?, val variacao: Double?, val em: String,
+        val venda: Double? = null, val compra: Double? = null
     )
 
     private const val AO_MESMO_TEMPO = 6
@@ -115,7 +122,8 @@ object Corretoras {
                         Crua(
                             preco, d(o, "highPrice"), d(o, "lowPrice"),
                             d(o, "quoteVolume"), d(o, "priceChangePercent"),
-                            if (par.endsWith("BRL")) "BRL" else "USD"
+                            if (par.endsWith("BRL")) "BRL" else "USD",
+                            venda = d(o, "askPrice"), compra = d(o, "bidPrice")
                         )
                     }.getOrNull()
                     if (r != null) { achou = r; break }
@@ -139,7 +147,8 @@ object Corretoras {
                 saida[s] = Crua(
                     preco, d(o, "high"), d(o, "low"),
                     volBase?.let { it * preco },
-                    variacaoPorAbertura(preco, d(o, "open")), "BRL"
+                    variacaoPorAbertura(preco, d(o, "open")), "BRL",
+                    venda = d(o, "sell"), compra = d(o, "buy")
                 )
             }
             saida
@@ -169,9 +178,12 @@ object Corretoras {
                 val r = o.optJSONObject("rolling_24h") ?: continue
                 val preco = o.optJSONObject("last_trade")?.let { d(it, "price") } ?: continue
                 if (preco <= 0.0) continue
+                val melhor = o.optJSONObject("best")
                 saida[s] = Crua(
                     preco, d(r, "high"), d(r, "low"),
-                    d(r, "quote_volume"), d(r, "price_change_percent"), "BRL"
+                    d(r, "quote_volume"), d(r, "price_change_percent"), "BRL",
+                    venda = melhor?.optJSONObject("ask")?.let { d(it, "price") },
+                    compra = melhor?.optJSONObject("bid")?.let { d(it, "price") }
                 )
             }
             saida
@@ -210,7 +222,8 @@ object Corretoras {
             Crua(
                 preco, item("h", 1), item("l", 1),
                 volBase?.let { it * preco },
-                variacaoPorAbertura(preco, d(o, "o")), "USD"
+                variacaoPorAbertura(preco, d(o, "o")), "USD",
+                venda = item("a", 0), compra = item("b", 0)
             )
         }
 
@@ -226,7 +239,8 @@ object Corretoras {
                 else Crua(
                     preco, d(o, "high24h"), d(o, "low24h"),
                     d(o, "volCcy24h"),
-                    variacaoPorAbertura(preco, d(o, "open24h")), "USD"
+                    variacaoPorAbertura(preco, d(o, "open24h")), "USD",
+                    venda = d(o, "askPx"), compra = d(o, "bidPx")
                 )
             }
         }
@@ -256,7 +270,8 @@ object Corretoras {
                 saida[s] = Crua(
                     preco, d(o, "high"), d(o, "low"),
                     volBase?.let { it * preco },
-                    d(o, "percent_change_24"), "USD"
+                    d(o, "percent_change_24"), "USD",
+                    venda = d(o, "ask"), compra = d(o, "bid")
                 )
             }
             saida
@@ -300,7 +315,9 @@ object Corretoras {
                 baixa = c.baixa?.times(fator),
                 volume = c.volume?.times(fator),
                 variacao = c.variacao,
-                convertido = converte
+                convertido = converte,
+                venda = c.venda?.times(fator),
+                compra = c.compra?.times(fator)
             )
         }
         return saida

@@ -6,6 +6,10 @@
     DELE, com o idioma DELE, e por isso o widget aparecia em inglês mesmo com o
     app em português. Tudo é escrito por código, a partir de um contexto já
     ajustado para o idioma escolhido — ver WidgetCotacao.desenhar.
+
+    A coluna da esquerda (venda/compra) é escondida quando o preço vem da média
+    do mercado: média não tem livro de ofertas, e inventar um número ali seria
+    mentira. As outras duas colunas se espalham sozinhas, porque todas têm peso.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/wRaiz"
@@ -13,104 +17,260 @@
     android:layout_height="match_parent"
     android:background="@drawable/fundo_widget"
     android:orientation="vertical"
-    android:padding="14dp">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/wTitulo"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ellipsize="end"
-            android:letterSpacing="0.12"
-            android:maxLines="1"
-            android:textColor="@color/btc"
-            android:textSize="11sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/wMarca"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/mint"
-            android:textSize="11sp"
-            android:textStyle="bold" />
-    </LinearLayout>
+    android:padding="13dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:baselineAligned="false"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <LinearLayout
+        <ImageView
+            android:id="@+id/wLogo"
+            android:layout_width="46dp"
+            android:layout_height="15dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/marca_curta"
+            android:scaleType="fitStart"
+            android:src="@drawable/logo_kriptobr" />
+
+        <TextView
+            android:id="@+id/wPar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/tinta"
+            android:textSize="13sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/wPreco"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textColor="@color/tinta"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/wVar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:textColor="@color/alta"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/wFaixa"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textColor="@color/apagado"
-                android:textSize="11.5sp"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/wVolume"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textColor="@color/apagado"
-                android:textSize="11.5sp"
-                android:visibility="gone" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/wPreco"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/tinta"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/wAtualizar"
-            android:layout_width="34dp"
-            android:layout_height="34dp"
-            android:layout_gravity="bottom"
-            android:background="@drawable/fundo_bolinha"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginStart="4dp"
             android:contentDescription="@string/widget_atualizar"
-            android:padding="8dp"
+            android:padding="5dp"
             android:src="@drawable/ic_atualizar" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/wColA"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:baselineAligned="false"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/wVendaL"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:textColor="@color/apagado"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/wVendaV"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textColor="@color/baixa"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/wCompraL"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:textColor="@color/apagado"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/wCompraV"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textColor="@color/alta"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/wColB"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:baselineAligned="false"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/wVarL"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:textColor="@color/apagado"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/wVarV"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textColor="@color/alta"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/wVolL"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:textColor="@color/apagado"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/wVolV"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textColor="@color/tinta"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/wColC"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:baselineAligned="false"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/wMaxL"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:textColor="@color/apagado"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/wMaxV"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textColor="@color/tinta"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/wMinL"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:textColor="@color/apagado"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/wMinV"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textColor="@color/tinta"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/wL1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="4dp"
         android:baselineAligned="false"
         android:orientation="horizontal"
         android:visibility="gone">
@@ -123,7 +283,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="@color/tinta2"
-            android:textSize="12.5sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/wL1Var"
@@ -132,14 +292,14 @@
             android:layout_marginStart="8dp"
             android:maxLines="1"
             android:textColor="@color/alta"
-            android:textSize="12.5sp"
+            android:textSize="12sp"
             android:textStyle="bold" />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/wL2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="4dp"
         android:baselineAligned="false"
         android:orientation="horizontal"
         android:visibility="gone">
@@ -152,7 +312,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="@color/tinta2"
-            android:textSize="12.5sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/wL2Var"
@@ -161,14 +321,14 @@
             android:layout_marginStart="8dp"
             android:maxLines="1"
             android:textColor="@color/alta"
-            android:textSize="12.5sp"
+            android:textSize="12sp"
             android:textStyle="bold" />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/wL3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="4dp"
         android:baselineAligned="false"
         android:orientation="horizontal"
         android:visibility="gone">
@@ -181,7 +341,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="@color/tinta2"
-            android:textSize="12.5sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/wL3Var"
@@ -190,14 +350,14 @@
             android:layout_marginStart="8dp"
             android:maxLines="1"
             android:textColor="@color/alta"
-            android:textSize="12.5sp"
+            android:textSize="12sp"
             android:textStyle="bold" />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/wL4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="4dp"
         android:baselineAligned="false"
         android:orientation="horizontal"
         android:visibility="gone">
@@ -210,7 +370,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="@color/tinta2"
-            android:textSize="12.5sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/wL4Var"
@@ -219,14 +379,14 @@
             android:layout_marginStart="8dp"
             android:maxLines="1"
             android:textColor="@color/alta"
-            android:textSize="12.5sp"
+            android:textSize="12sp"
             android:textStyle="bold" />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/wL5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="4dp"
         android:baselineAligned="false"
         android:orientation="horizontal"
         android:visibility="gone">
@@ -239,7 +399,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="@color/tinta2"
-            android:textSize="12.5sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/wL5Var"
@@ -248,7 +408,7 @@
             android:layout_marginStart="8dp"
             android:maxLines="1"
             android:textColor="@color/alta"
-            android:textSize="12.5sp"
+            android:textSize="12sp"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -260,5 +420,5 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:textColor="@color/apagado"
-        android:textSize="11sp" />
+        android:textSize="10.5sp" />
 </LinearLayout>

@@ -50,7 +50,7 @@ object Ajustes {
 
     // --------------------------------------------------------------- widget
     /** Quantas moedas extras aparecem embaixo do Bitcoin no widget (0 a 5). */
-    fun widgetQuantas(ctx: Context): Int = p(ctx).getInt(K_WIDGET_QTD, 2).coerceIn(0, 5)
+    fun widgetQuantas(ctx: Context): Int = p(ctx).getInt(K_WIDGET_QTD, 0).coerceIn(0, 5)
 
     fun salvarWidgetQuantas(ctx: Context, n: Int) {
         p(ctx).edit().putInt(K_WIDGET_QTD, n.coerceIn(0, 5)).apply()
@@ -59,7 +59,7 @@ object Ajustes {
     fun widgetFaixa(ctx: Context): Boolean = p(ctx).getBoolean(K_WIDGET_FAIXA, true)
     fun salvarWidgetFaixa(ctx: Context, v: Boolean) { p(ctx).edit().putBoolean(K_WIDGET_FAIXA, v).apply() }
 
-    fun widgetVolume(ctx: Context): Boolean = p(ctx).getBoolean(K_WIDGET_VOLUME, false)
+    fun widgetVolume(ctx: Context): Boolean = p(ctx).getBoolean(K_WIDGET_VOLUME, true)
     fun salvarWidgetVolume(ctx: Context, v: Boolean) { p(ctx).edit().putBoolean(K_WIDGET_VOLUME, v).apply() }
 
     // --------------------------------------------------------------- avisos

@@ -75,6 +75,8 @@ object Repo {
                 maxima24h = c.alta ?: 0.0,
                 minima24h = c.baixa ?: 0.0,
                 volume24h = c.volume ?: 0.0,
+                venda = c.venda ?: 0.0,
+                compra = c.compra ?: 0.0,
                 fonte = fonte,
                 convertido = c.convertido
             )

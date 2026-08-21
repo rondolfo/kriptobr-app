@@ -32,8 +32,8 @@ object Formato {
         return f.format(v)
     }
 
-    fun compacto(v: Double, fiat: String = Guardados.fiat()): String {
-        val sinal = if (fiat.equals("brl", true)) "R$" else "US$"
+    fun compacto(v: Double, fiat: String = Guardados.fiat(), comMoeda: Boolean = true): String {
+        val sinal = if (!comMoeda) "" else if (fiat.equals("brl", true)) "R$" else "US$"
         val (n, s) = when {
             abs(v) >= 1e12 -> v / 1e12 to " tri"
             abs(v) >= 1e9 -> v / 1e9 to " bi"
@@ -41,7 +41,7 @@ object Formato {
             else -> v to ""
         }
         val f = NumberFormat.getNumberInstance(local()).apply { maximumFractionDigits = if (s.isEmpty()) 0 else 2 }
-        return "$sinal ${f.format(n)}$s"
+        return (if (sinal.isEmpty()) "" else "$sinal ") + f.format(n) + s
     }
 
     fun porcento(v: Double, comSeta: Boolean = true): String {
@@ -52,8 +52,11 @@ object Formato {
         return seta + f.format(abs(v)) + "%"
     }
 
-    fun numero(v: Double, casas: Int = 0): String {
-        val f = NumberFormat.getNumberInstance(local()).apply { maximumFractionDigits = casas }
+    fun numero(v: Double, casas: Int = 0, minimo: Int = 0): String {
+        val f = NumberFormat.getNumberInstance(local()).apply {
+            maximumFractionDigits = casas
+            minimumFractionDigits = minimo.coerceAtMost(casas)
+        }
         return f.format(v)
     }
 
