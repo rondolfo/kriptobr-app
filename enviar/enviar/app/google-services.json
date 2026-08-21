@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "619708988490",
+    "project_id": "kriptobr-mercado"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:619708988490:android:68636b4fa9303f8efb7ab3",
+        "android_client_info": {
+          "package_name": "com.kriptobr.mercado"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUXv0FRcbAL-PVUGudR__uAkD0RUm4vFs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:619708988490:android:aae14e94706c7977fb7ab3",
+        "android_client_info": {
+          "package_name": "com.kriptobr.mercado.debug"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUXv0FRcbAL-PVUGudR__uAkD0RUm4vFs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

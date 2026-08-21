@@ -34,20 +34,20 @@ isso que não trava mais.
 O robô de compilação já está no repositório. A cada envio ele gera um APK novo em
 **Releases**, em 3 a 6 minutos. Baixe pelo celular e toque no arquivo.
 
-## Ligar as notificações da KriptoBR (cupons)
+## Notificações da KriptoBR (cupons) — já está ligado
 
-Os alertas de preço que o usuário cria **já funcionam sem nada disso**. O Firebase
-só é necessário para você disparar cupons e novidades para quem tem o app.
+O projeto **KriptoBR Mercado** (`kriptobr-mercado`) já existe no Firebase e o
+`app/google-services.json` já está nesta pasta, com os dois pacotes registrados:
 
-1. <https://console.firebase.google.com> → **Criar projeto** (nome: `KriptoBR`).
-   Mantenha o Google Analytics ligado — é ele que permite mirar "quem instalou há
-   mais de X dias", que é exatamente o que você quer para o cupom.
-2. Dentro do projeto, ícone do **Android**
-3. Nome do pacote: `com.kriptobr.mercado`
-4. Baixe o **`google-services.json`**
-5. No GitHub, entre na pasta `app` → **Add file** → **Upload files** → arraste o arquivo
+| Pacote | Para que serve |
+|---|---|
+| `com.kriptobr.mercado` | versão de release (Play Store) |
+| `com.kriptobr.mercado.debug` | o APK de teste que sai do robô |
 
-Pronto. O próximo APK sai com push funcionando.
+Não precisa baixar nem mover arquivo nenhum. O próximo APK já sai com push e com
+relatório de falhas (Crashlytics) funcionando.
+
+Os alertas de preço que o próprio usuário cria continuam funcionando sem Firebase.
 
 ### Enviar o cupom
 

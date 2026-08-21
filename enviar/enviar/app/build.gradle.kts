@@ -4,12 +4,16 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose")
 }
 
-/* O push só entra quando você colocar o google-services.json em app/.
-   Sem o arquivo o app compila e funciona igual — só não recebe notificação da KriptoBR.
-   Os alertas de preço que o próprio usuário cria funcionam sem Firebase nenhum. */
+/* O google-services.json do projeto "KriptoBR Mercado" (kriptobr-mercado) já está
+   aqui em app/ — o push da marca e o relatório de falhas ligam sozinhos.
+   Se algum dia esse arquivo sumir, o app continua compilando e funcionando: só o
+   push da KriptoBR para de existir. Os alertas de preço que o próprio usuário cria
+   nunca dependeram do Firebase. */
 val temFirebase = file("google-services.json").exists()
 if (temFirebase) {
     apply(plugin = "com.google.gms.google-services")
+    // Relatório de falhas: exigência prática para manter nota boa na Play Store.
+    apply(plugin = "com.google.firebase.crashlytics")
 }
 
 android {
@@ -65,9 +69,10 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
 
     // Sem google-services.json o Firebase apenas não inicia — registra um aviso e segue.
-    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
+    implementation(platform("com.google.firebase:firebase-bom:34.17.0"))
     implementation("com.google.firebase:firebase-messaging")
     implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-crashlytics")
 
     debugImplementation("androidx.compose.ui:ui-tooling")
 }
