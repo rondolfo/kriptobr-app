@@ -19,6 +19,7 @@ object Guardados {
     private const val K_CACHE = "cache_moedas"
     private const val K_CACHE_QUANDO = "cache_quando"
     private const val K_MEDO = "cache_medo"
+    private const val K_FONTE = "fonte_precos"
 
     private fun p(ctx: Context) = ctx.getSharedPreferences(ARQ, Context.MODE_PRIVATE)
 
@@ -37,6 +38,14 @@ object Guardados {
        precisa continuar podendo chamar fiat() sem receber nada. */
     @Volatile
     var idiomaValendo: String = ""
+
+    // ---------- de onde vem o preço ----------
+    fun fonte(ctx: Context): String =
+        p(ctx).getString(K_FONTE, Corretoras.MEDIA) ?: Corretoras.MEDIA
+
+    fun salvarFonte(ctx: Context, id: String) {
+        p(ctx).edit().putString(K_FONTE, id).apply()
+    }
 
     // ---------- favoritos ----------
     fun favoritos(ctx: Context): List<String> {
@@ -81,6 +90,8 @@ object Guardados {
             arr.put(JSONObject().apply {
                 put("id", c.id); put("simbolo", c.simbolo); put("nome", c.nome)
                 put("preco", c.preco); put("var", c.variacao24h); put("cap", c.capMercado)
+                put("alta", c.maxima24h); put("baixa", c.minima24h); put("vol", c.volume24h)
+                put("fonte", c.fonte); put("conv", c.convertido)
                 put("hist", JSONArray(c.historico.takeLast(60)))
             })
         }
@@ -108,7 +119,12 @@ object Guardados {
                 preco = o.getDouble("preco"),
                 variacao24h = o.getDouble("var"),
                 capMercado = o.optDouble("cap", 0.0),
-                historico = h?.let { s -> (0 until s.length()).map { s.getDouble(it) } } ?: emptyList()
+                maxima24h = o.optDouble("alta", 0.0),
+                minima24h = o.optDouble("baixa", 0.0),
+                volume24h = o.optDouble("vol", 0.0),
+                historico = h?.let { s -> (0 until s.length()).map { s.getDouble(it) } } ?: emptyList(),
+                fonte = o.optString("fonte", ""),
+                convertido = o.optBoolean("conv", false)
             )
         }
         val medo = p(ctx).getString(K_MEDO, null)?.let {

@@ -55,6 +55,9 @@ object Api {
                 preco = o.getDouble("current_price"),
                 variacao24h = o.optDouble("price_change_percentage_24h", 0.0),
                 capMercado = o.optDouble("market_cap", 0.0),
+                maxima24h = o.optDouble("high_24h", 0.0),
+                minima24h = o.optDouble("low_24h", 0.0),
+                volume24h = o.optDouble("total_volume", 0.0),
                 historico = spark?.let { s -> (0 until s.length()).map { s.getDouble(it) } } ?: emptyList()
             )
         }
@@ -66,6 +69,22 @@ object Api {
             fun em(i: Int): Int? = if (d.length() > i) d.getJSONObject(i).getString("value").toIntOrNull() else null
             MedoGanancia(em(0) ?: return@runCatching null, em(1), em(7))
         }.getOrNull()
+    }
+
+    /* Quanto vale um dólar em real. Só é buscado quando a corretora escolhida
+       cota em moeda diferente da que a tela mostra — e vale por cinco minutos. */
+    @Volatile private var dolarGuardado = 0.0
+    @Volatile private var dolarQuando = 0L
+
+    suspend fun dolarEmReal(): Double = withContext(Dispatchers.IO) {
+        val agora = System.currentTimeMillis()
+        if (dolarGuardado > 0.0 && agora - dolarQuando < 5 * 60_000L) return@withContext dolarGuardado
+        val v = runCatching {
+            JSONObject(buscarTexto("$COINGECKO/simple/price?ids=tether&vs_currencies=brl", 12))
+                .getJSONObject("tether").getDouble("brl")
+        }.getOrDefault(0.0)
+        if (v > 0.0) { dolarGuardado = v; dolarQuando = agora }
+        v
     }
 
     /** Lista para o usuário escolher favoritos. Sem gráfico, então 250 cabem numa consulta só. */
@@ -81,7 +100,10 @@ object Api {
                 nome = o.getString("name"),
                 preco = o.getDouble("current_price"),
                 variacao24h = o.optDouble("price_change_percentage_24h", 0.0),
-                capMercado = o.optDouble("market_cap", 0.0)
+                capMercado = o.optDouble("market_cap", 0.0),
+                maxima24h = o.optDouble("high_24h", 0.0),
+                minima24h = o.optDouble("low_24h", 0.0),
+                volume24h = o.optDouble("total_volume", 0.0)
             )
         }
     }

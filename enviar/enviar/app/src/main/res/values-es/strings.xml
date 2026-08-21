@@ -149,4 +149,18 @@
     <string name="codigo_rodape">El código vale por 30 minutos. Nada se envía sin tu confirmación.</string>
     <string name="confirmar">Confirmar</string>
     <string name="rastrear_chamada">Pega una dirección y mírala en la blockchain</string>
+    <string name="ficha_7dias">Últimos 7 días</string>
+    <string name="ficha_faixa">Rango del día</string>
+    <string name="ficha_volume">Volumen en 24 h</string>
+    <string name="ficha_cap">Capitalización</string>
+    <string name="ficha_maxima">Máximo del día</string>
+    <string name="ficha_minima">Mínimo del día</string>
+    <string name="ficha_criar_alerta">Crear alerta de precio</string>
+    <string name="fonte_titulo">Origen de los precios</string>
+    <string name="fonte_explica">El promedio del mercado es el número que muestra cualquier sitio. El precio de tu casa de cambio es el que realmente pagas.</string>
+    <string name="fonte_media_nome">Promedio del mercado</string>
+    <string name="fonte_media">Promedio del mercado (CoinGecko)</string>
+    <string name="fonte_direta">Directo de %1$s</string>
+    <string name="fonte_convertida">%1$s, convertido a tu moneda</string>
+    <string name="trocar">Cambiar</string>
 </resources>

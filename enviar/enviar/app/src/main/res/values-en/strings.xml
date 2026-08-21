@@ -149,4 +149,18 @@
     <string name="codigo_rodape">The code is valid for 30 minutes. Nothing is sent without your confirmation.</string>
     <string name="confirmar">Confirm</string>
     <string name="rastrear_chamada">Paste an address and see it on the blockchain</string>
+    <string name="ficha_7dias">Last 7 days</string>
+    <string name="ficha_faixa">Today\'s range</string>
+    <string name="ficha_volume">24 h volume</string>
+    <string name="ficha_cap">Market cap</string>
+    <string name="ficha_maxima">Today\'s high</string>
+    <string name="ficha_minima">Today\'s low</string>
+    <string name="ficha_criar_alerta">Create price alert</string>
+    <string name="fonte_titulo">Price source</string>
+    <string name="fonte_explica">The market average is the number every site shows. Your exchange price is what you actually pay.</string>
+    <string name="fonte_media_nome">Market average</string>
+    <string name="fonte_media">Market average (CoinGecko)</string>
+    <string name="fonte_direta">Straight from %1$s</string>
+    <string name="fonte_convertida">%1$s, converted to your currency</string>
+    <string name="trocar">Change</string>
 </resources>

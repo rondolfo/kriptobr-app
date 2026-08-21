@@ -8,7 +8,16 @@ data class Moeda(
     val preco: Double,
     val variacao24h: Double,
     val capMercado: Double = 0.0,
-    val historico: List<Double> = emptyList()
+    /* Máxima, mínima e volume das últimas 24 h. Zero quer dizer "não veio",
+       não "foi zero" — a tela some com o campo em vez de mostrar R$ 0,00. */
+    val maxima24h: Double = 0.0,
+    val minima24h: Double = 0.0,
+    val volume24h: Double = 0.0,
+    val historico: List<Double> = emptyList(),
+    /** Corretora de onde veio este preço. Vazio = média do mercado. */
+    val fonte: String = "",
+    /** true quando o preço da corretora era em dólar e foi convertido para real. */
+    val convertido: Boolean = false
 )
 
 /** Leitura do índice de medo e ganância. */

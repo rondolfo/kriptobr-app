@@ -153,4 +153,18 @@
     <string name="codigo_rodape">O código vale por 30 minutos. Nada é enviado sem a sua confirmação.</string>
     <string name="confirmar">Confirmar</string>
     <string name="rastrear_chamada">Cole um endereço e veja tudo na blockchain</string>
+    <string name="ficha_7dias">Últimos 7 dias</string>
+    <string name="ficha_faixa">Faixa do dia</string>
+    <string name="ficha_volume">Volume em 24 h</string>
+    <string name="ficha_cap">Valor de mercado</string>
+    <string name="ficha_maxima">Máxima do dia</string>
+    <string name="ficha_minima">Mínima do dia</string>
+    <string name="ficha_criar_alerta">Criar alerta de preço</string>
+    <string name="fonte_titulo">Origem dos preços</string>
+    <string name="fonte_explica">A média do mercado é o número que todo site mostra. O preço da sua corretora é o que você realmente paga.</string>
+    <string name="fonte_media_nome">Média do mercado</string>
+    <string name="fonte_media">Média do mercado (CoinGecko)</string>
+    <string name="fonte_direta">Preço direto da %1$s</string>
+    <string name="fonte_convertida">%1$s, convertido para a sua moeda</string>
+    <string name="trocar">Trocar</string>
 </resources>

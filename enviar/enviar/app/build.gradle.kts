@@ -68,8 +68,14 @@ dependencies {
     implementation("androidx.work:work-runtime-ktx:2.10.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
 
-    // Sem google-services.json o Firebase apenas não inicia — registra um aviso e segue.
-    implementation(platform("com.google.firebase:firebase-bom:34.17.0"))
+    /* Fica em 33.7.0 de propósito. A partir da BoM 34 o Firebase passou a
+       publicar o play-services-measurement compilado com Kotlin 2.2, e o
+       compilador Kotlin 2.0.21 deste projeto recusa metadado 2.2:
+         "Module was compiled with an incompatible version of Kotlin.
+          The binary version of its metadata is 2.2.0, expected version is 2.0.0."
+       Subir a BoM exige subir o Kotlin e o Compose junto. Não vale o risco
+       agora: 33.7.0 tem push, analytics e Crashlytics completos. */
+    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
     implementation("com.google.firebase:firebase-messaging")
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-crashlytics")

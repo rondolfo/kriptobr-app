@@ -21,6 +21,7 @@ import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
@@ -163,6 +164,10 @@ class MainActivity : ComponentActivity() {
            formulário na cara é o caminho mais curto para a desinstalação e para
            a avaliação de uma estrela. */
         var mostrarCadastro by remember { mutableStateOf(Cadastro.deveMostrar(ctx)) }
+        // ficha que abre ao tocar numa moeda, e a escolha de onde vem o preço
+        var fichaDe by remember { mutableStateOf<Moeda?>(null) }
+        var escolhendoFonte by remember { mutableStateOf(false) }
+        var fonte by remember { mutableStateOf(Guardados.fonte(ctx)) }
         LaunchedEffect(Unit) {
             Cadastro.marcarUso(ctx)
             atualizar()
@@ -213,7 +218,8 @@ class MainActivity : ComponentActivity() {
                     aoTrocarIdioma = { tag -> Idioma.salvar(ctx, tag); recreate() },
                     aoRastrear = { rastreando = true },
                     aoCompartilhar = { compartilhando = true },
-                    aoCadastrar = if (Cadastro.jaCadastrado(ctx)) null else ({ mostrarCadastro = true })
+                    aoCadastrar = if (Cadastro.jaCadastrado(ctx)) null else ({ mostrarCadastro = true }),
+                    aoTrocarFonte = { escolhendoFonte = true }
                 )
             },
             bottomBar = { BarraAbas(aba, novas) { abaIndice = it.ordinal } }
@@ -227,7 +233,9 @@ class MainActivity : ComponentActivity() {
                         aoEditarLista = { editando = true },
                         aoTentarDeNovo = atualizar,
                         aoRastrear = { rastreando = true },
-                        aoTocarMoeda = { }
+                        aoTocarMoeda = { fichaDe = it },
+                        fonte = fonte,
+                        aoTrocarFonte = { escolhendoFonte = true }
                     )
                     Aba.NOTICIAS -> TelaNoticias(
                         noticias = noticias,
@@ -256,6 +264,29 @@ class MainActivity : ComponentActivity() {
                     Aba.LOJA -> TelaLoja()
                 }
                 if (compartilhando) DialogoCompartilhar(mercado) { compartilhando = false }
+                fichaDe?.let { m ->
+                    FichaMoeda(
+                        // segue a atualização: se o preço mudar com a ficha aberta, ela muda junto
+                        moeda = mercado.acharPor(m.id) ?: m,
+                        aoCriarAlerta = {
+                            fichaDe = null
+                            abaIndice = Aba.ALERTAS.ordinal
+                        },
+                        aoFechar = { fichaDe = null }
+                    )
+                }
+                if (escolhendoFonte) DialogoFonte(
+                    atual = fonte,
+                    aoEscolher = { id ->
+                        escolhendoFonte = false
+                        if (id != fonte) {
+                            fonte = id
+                            Guardados.salvarFonte(ctx, id)
+                            atualizar()
+                        }
+                    },
+                    aoFechar = { escolhendoFonte = false }
+                )
             }
         }
     }
@@ -269,7 +300,8 @@ class MainActivity : ComponentActivity() {
         aoTrocarIdioma: (String) -> Unit,
         aoRastrear: () -> Unit,
         aoCompartilhar: () -> Unit,
-        aoCadastrar: (() -> Unit)?
+        aoCadastrar: (() -> Unit)?,
+        aoTrocarFonte: () -> Unit
     ) {
         TopAppBar(
             title = {
@@ -286,7 +318,7 @@ class MainActivity : ComponentActivity() {
             },
             actions = {
                 BotaoIdioma(aoTrocarIdioma)
-                MenuExtras(aoRastrear, aoCompartilhar, aoCadastrar)
+                MenuExtras(aoRastrear, aoCompartilhar, aoCadastrar, aoTrocarFonte)
                 if (aba == Aba.MERCADO || aba == Aba.NOTICIAS) {
                     if (carregando) {
                         CircularProgressIndicator(
@@ -355,7 +387,8 @@ class MainActivity : ComponentActivity() {
     private fun MenuExtras(
         aoRastrear: () -> Unit,
         aoCompartilhar: () -> Unit,
-        aoCadastrar: (() -> Unit)?
+        aoCadastrar: (() -> Unit)?,
+        aoTrocarFonte: () -> Unit
     ) {
         var aberto by remember { mutableStateOf(false) }
         Box {
@@ -372,6 +405,11 @@ class MainActivity : ComponentActivity() {
                     text = { Text(stringResource(R.string.compartilhar_titulo), color = Tinta, fontSize = 14.sp) },
                     leadingIcon = { Icon(Icons.Filled.Share, null, tint = Mint) },
                     onClick = { aberto = false; aoCompartilhar() }
+                )
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.fonte_titulo), color = Tinta, fontSize = 14.sp) },
+                    leadingIcon = { Icon(Icons.Filled.Settings, null, tint = Mint) },
+                    onClick = { aberto = false; aoTrocarFonte() }
                 )
                 if (aoCadastrar != null) DropdownMenuItem(
                     text = { Text(stringResource(R.string.receber_cupom), color = Tinta, fontSize = 14.sp) },

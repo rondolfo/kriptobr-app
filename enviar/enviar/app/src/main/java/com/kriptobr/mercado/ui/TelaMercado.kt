@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kriptobr.mercado.R
+import com.kriptobr.mercado.dados.Corretoras
 import com.kriptobr.mercado.dados.Formato
 import com.kriptobr.mercado.dados.MedoGanancia
 import com.kriptobr.mercado.dados.Mercado
@@ -30,7 +31,9 @@ fun TelaMercado(
     aoEditarLista: () -> Unit,
     aoTentarDeNovo: () -> Unit,
     aoRastrear: () -> Unit,
-    aoTocarMoeda: (Moeda) -> Unit
+    aoTocarMoeda: (Moeda) -> Unit,
+    fonte: String,
+    aoTrocarFonte: () -> Unit
 ) {
     val btc = mercado.acharPor("bitcoin")
     val secundarias = listOf("ethereum", "solana").mapNotNull { mercado.acharPor(it) }
@@ -59,6 +62,9 @@ fun TelaMercado(
                 }
             }
         }
+        /* De onde vêm os preços fica à vista, e não escondido no menu: quem
+           trocou para a Binance precisa lembrar disso ao olhar o número. */
+        if (temDados) item { LinhaFonte(fonte, aoTrocarFonte) }
         mercado.medo?.let { fg ->
             item { TituloSecao(stringResource(R.string.termometro)) }
             item { CartaoMedo(fg) }
@@ -73,6 +79,29 @@ fun TelaMercado(
         // "sua lista está vazia" só quando ela está mesmo vazia — não quando a
         // internet falhou, que era o caso em que mais aparecia
         if (lista.isEmpty() && !carregando && erro == null) item { VaziaLista(aoEditarLista) }
+    }
+}
+
+/** Linha discreta dizendo de qual corretora vêm os números — e como trocar. */
+@Composable
+private fun LinhaFonte(fonte: String, aoTrocar: () -> Unit) {
+    val nome = if (fonte.isEmpty() || fonte == Corretoras.MEDIA)
+        stringResource(R.string.fonte_media_nome) else Corretoras.nomeDe(fonte)
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .padding(top = 12.dp)
+            .clip(RoundedCornerShape(10.dp))
+            .clicavel(aoTrocar)
+            .background(Superficie)
+            .padding(horizontal = 12.dp, vertical = 9.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(stringResource(R.string.fonte_titulo), color = Apagado, fontSize = 11.5f.sp)
+        Spacer(Modifier.width(8.dp))
+        Text(nome, color = Tinta, fontWeight = FontWeight.SemiBold, fontSize = 12.5f.sp)
+        Spacer(Modifier.weight(1f))
+        Text(stringResource(R.string.trocar), color = Mint, fontWeight = FontWeight.Bold, fontSize = 12.sp)
     }
 }
 
